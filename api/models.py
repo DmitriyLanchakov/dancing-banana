@@ -73,10 +73,14 @@ class Coc(models.Model):
     longitude = models.CharField(max_length=255, default='')
     phone_number = models.CharField(max_length=255, default='')
     coc_type = models.CharField(max_length=255, default='')
-    beds_available = models.IntegerField(blank=True, null=True, default=0) #cached
-    beds_total = models.IntegerField(blank=True, null=True, default=0) #cached
-    # requirements = models.CharField(max_length=255, default='') # female-only, pregnant, male-only
 
+    allow_single_men = models.BooleanField(default=False)
+    allow_single_women = models.BooleanField(default=False)
+    allow_family = models.BooleanField(default=False)
+    allow_veteran = models.BooleanField(default=False)
+
+    beds_total = models.IntegerField(blank=True, null=True, default=0)
+    beds_available = models.IntegerField(blank=True, null=True, default=0)
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     modified = models.DateTimeField(auto_now=True, blank=True, null=True)

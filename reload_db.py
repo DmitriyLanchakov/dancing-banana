@@ -57,6 +57,8 @@ with open('clients.csv', 'rb') as f:
     print "Imported", i, "clients."
 
 
+
+
 if os.environ.get('IS_HEROKU_SERVER', False):
     pass
 else:

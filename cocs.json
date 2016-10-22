@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Gateway 180",
+        "address": "1000 N. 19th St., St. Louis, MO 63106",
+        "latitude": "38.637485",
+        "longitude": "-90.204722",
+        "phone_number": "(314) 231-1515",
+        "coc_type": "shelter",
+        "beds_total": "174",
+        "allow_single_men": false,
+        "allow_single_women": true,
+        "allow_family": true,
+        "allow_veteran": false
+    },
+    {
+        "name": "Loaves & Fishes Inc.",
+        "address": "2750 McKelvey Rd, Maryland Heights, MO 63043",
+        "latitude": "38.733234",
+        "longitude": "-90.445707",
+        "phone_number": "(314) 291-3857",
+        "coc_type": "shelter",
+        "beds_total": "29",
+        "allow_single_men": false,
+        "allow_single_women": true,
+        "allow_family": true,
+        "allow_veteran": false
+    },
+    {
+        "name": "12th & Park Shelter",
+        "address": "1410 S Tucker Blvd, St. Louis, MO 63104",
+        "latitude": "38.613989",
+        "longitude": "-90.204511",
+        "phone_number": "",
+        "coc_type": "shelter",
+        "beds_total": "125",
+        "allow_single_men": true,
+        "allow_single_women": false,
+        "allow_family": false,
+        "allow_veteran": false
+    }
+
+]
+
+
