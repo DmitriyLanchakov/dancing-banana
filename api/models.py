@@ -22,6 +22,7 @@ class Fish(models.Model):
 class Event(models.Model):
     coc_location_name = models.CharField(max_length=255, default='')
     coc_location_id = models.CharField(max_length=255, default='')
+    from_coc_location_id = models.CharField(max_length=255, default='')
     event_type = models.CharField(max_length=255, default='') #logged note, grabbed a bed, asked for help, was referred
     client_id = models.CharField(max_length=255, default='')
     details = models.TextField(blank=True, null=True)
