@@ -27,11 +27,13 @@ var infoWindowContent = [];
 var marker_images = [];
 var first_load = true;
 var map;
+var bounds;
+
 
 jQuery(function($) {
-    // Asynchronously Load the map API
-    var script = document.createElement('script');
-    script.src = "//maps.googleapis.com/maps/api/js?key={{GMAPS_API_KEY}}&sensor=false&callback=map_api_loaded";
+    // Asynchronously Load the map API. after key(&sensor=false)
+    var script = document.createElement('script'); 
+    script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyB1hPIegIrMRAYls0FO7TEVxSYljXc-L2s&callback=map_api_loaded";
     document.body.appendChild(script);
 });
 
@@ -51,7 +53,7 @@ function map_api_loaded() {
 function build_map(location) {
 	$('#map_canvas').html('');
 
-    var bounds = new google.maps.LatLngBounds();
+    bounds = new google.maps.LatLngBounds();
     var mapOptions = {
         mapTypeId: 'roadmap'
     };
@@ -70,6 +72,69 @@ function build_map(location) {
 	infoWindowContent = [];
 	marker_images = [];
 
+
+    var data = [
+        {
+            name: "Shelter",
+            latitude: "38.731429299999995",
+            longitude: "-90.607226",
+            time_left: "3",
+            id: "1",
+            coc_type: "shelter"
+        },
+        {
+            name: "Medical",
+            latitude: "38.725934",
+            longitude: "-90.607261",
+            time_left: "7",
+            id: "2",
+            coc_type: "medical"
+        },
+        {
+            name: "Charging Station",
+            latitude: "38.727976",
+            longitude: "-90.5995371",
+            time_left: "7",
+            id: "2",
+            coc_type: "charge"
+        },
+        {
+            name: "WiFi",
+            latitude: "38.729441",
+            longitude: "-90.601157",
+            time_left: "7",
+            id: "2",
+            coc_type: "WiFi"
+        },
+        {
+            name: "Housing",
+            latitude: "38.737888",
+            longitude: "-90.602325",
+            time_left: "3",
+            id: "1",
+            coc_type: "housing"
+        },
+                {
+            name: "Housing",
+            latitude: "38.737888",
+            longitude: "-90.602325",
+            time_left: "3",
+            id: "1",
+            coc_type: "housing"
+        },
+        {
+            name: "Housing",
+            latitude: "38.737888",
+            longitude: "-90.602325",
+            time_left: "3",
+            id: "1",
+            coc_type: "housing"
+        },
+
+
+    ];
+    build_markers(data);
+    /*
 	$.ajax({
 		type: 'POST',
 		url: '/get_poke',
@@ -85,11 +150,17 @@ function build_map(location) {
 		},
 		error: function() {
 			console.log('Error while attempting to retrieve poke locations');
-			setTimeout(function(){
-				navigator.geolocation.getCurrentPosition(handler);
-			}, 5000);
 		}
 	});
+	*/
+}
+
+function omwFunction(){
+    alert("We'll leave the lights on!")
+}
+
+function inhFunction(){
+    alert("Help is on the way!")
 }
 
 function build_markers(data) {
@@ -97,12 +168,34 @@ function build_markers(data) {
     $.each(data, function(k, v) {
         marker_obj = [v.name, v.latitude,v.longitude];
         markers.push(marker_obj);
-        infoWindowContent_obj = ['<div class="info_content">' +
-          '<h3>'+v.name+'</h3>' +
-          '<p>will be there for another '+v.time_left+' seconds.</p>' +
-          '</div>'];
+        if (v.coc_type == "shelter") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '<p>Beds left '+v.time_left+'</p>' +
+              '<button onclick="omwFunction()"> Im on my way </button>' +
+              '</div>'];
+            marker_images.push("/static/icons/shelter.png");
+        }
+        else if (v.coc_type == "medical") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '<button onclick="inhFunction()"> I need help </button>' +
+              '</div>'];
+            marker_images.push("/static/icons/medical.png");
+        }
+        else if (v.coc_type == "WiFi") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '</div>'];
+            marker_images.push("/static/icons/wifi.png");
+        }
+        else if (v.coc_type == "housing") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '</div>'];
+            marker_images.push("/static/icons/housing.png");
+        }
         infoWindowContent.push(infoWindowContent_obj);
-        marker_images.push("/static/poke/"+v.id+".ico");
     });
 
     // Display multiple markers on a map
@@ -122,10 +215,10 @@ function build_markers(data) {
         marker = new google.maps.Marker({
 			position: position,
 			map: map,
-			title: markers[i][0],
+			title: markers[i][1],
 			icon: {
 				url: marker_images[i],
-				scaledSize: size
+				scaledSize: new google.maps.Size(32, 32),
 			}
 		});
 
