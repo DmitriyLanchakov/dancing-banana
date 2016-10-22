@@ -25,14 +25,13 @@ body { height: 100%; margin: 0px; padding: 0px }
 var markers = [];
 var infoWindowContent = [];
 var marker_images = [];
-var first_load = true;
 var map;
 var bounds;
 
 
 jQuery(function($) {
     // Asynchronously Load the map API. after key(&sensor=false)
-    var script = document.createElement('script'); 
+    var script = document.createElement('script');
     script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyB1hPIegIrMRAYls0FO7TEVxSYljXc-L2s&callback=map_api_loaded";
     document.body.appendChild(script);
 });
@@ -62,17 +61,11 @@ function build_map(location) {
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     map.setTilt(45);
 
-    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
-    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-        map.setZoom(18);
-        google.maps.event.removeListener(boundsListener);
-    });
-
 	markers = [];
 	infoWindowContent = [];
 	marker_images = [];
 
-
+/*
     var data = [
         {
             name: "Shelter",
@@ -133,26 +126,24 @@ function build_map(location) {
 
 
     ];
-    build_markers(data);
-    /*
+	*/
+
 	$.ajax({
 		type: 'POST',
-		url: '/get_poke',
+		url: '/get_cocs',
 		data: {
 			location: location.coords.latitude.toString()+', '+location.coords.longitude.toString()
 		},
 		dataType: 'json',
 		success: function (data) {
-
-			console.log("pokemon_data", data.data);
+			console.log("return data", data.data);
             build_markers(data.data);
 
 		},
 		error: function() {
-			console.log('Error while attempting to retrieve poke locations');
+			console.log('Error while attempting to retrieve get_cocs');
 		}
 	});
-	*/
 }
 
 function omwFunction(){
@@ -207,6 +198,16 @@ function build_markers(data) {
               '</div>'];
             marker_images.push("/static/icons/food.png");
         }
+        else if (v.coc_type == "law") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '</div>'];
+            marker_images.push("/static/icons/law.png");
+        }
+		else {
+		  console.log(v)
+		  alert("eh?");
+		}
         infoWindowContent.push(infoWindowContent_obj);
     });
 
