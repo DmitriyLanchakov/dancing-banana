@@ -109,7 +109,36 @@
         "allow_single_women": true,
         "allow_family": true,
         "allow_veteran": true
+    },
+    {
+        "name": "St. Patrick Center",
+        "address": "800 N. Tucker Blvd. St. Louis, MO 63101",
+        "latitude": "38.633355",
+        "longitude": "-90.195691",
+        "phone_number": "(314) 802-0700",
+        "coc_type": "housing",
+        "beds_total": "0",
+        "require_pregnant": false,
+        "allow_single_men": true,
+        "allow_single_women": true,
+        "allow_family": true,
+        "allow_veteran": true
+    },
+    {
+        "name": "Food Outreach",
+        "address": "3117 Olive Street, St. Louis, MO 63103",
+        "latitude": "38.635714",
+        "longitude": "-90.224517",
+        "phone_number": "(314) 652-3663 x114",
+        "coc_type": "food",
+        "beds_total": "0",
+        "require_pregnant": false,
+        "allow_single_men": true,
+        "allow_single_women": true,
+        "allow_family": true,
+        "allow_veteran": true
     }
+
 ]
 
 
