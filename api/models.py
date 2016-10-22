@@ -74,6 +74,7 @@ class Coc(models.Model):
     phone_number = models.CharField(max_length=255, default='')
     coc_type = models.CharField(max_length=255, default='')
 
+    require_pregnant = models.BooleanField(default=False)
     allow_single_men = models.BooleanField(default=False)
     allow_single_women = models.BooleanField(default=False)
     allow_family = models.BooleanField(default=False)
