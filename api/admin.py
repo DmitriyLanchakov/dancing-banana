@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from api.models import Event
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('coc_location_name', 'client_id', 'created')
-    search_fields = ('coc_location_name', 'client_id')
+    list_display = ('coc_location_id', 'client_id', 'created')
+    search_fields = ('coc_location_id', 'client_id')
 admin.site.register(Event, EventAdmin)
 
 
