@@ -162,7 +162,7 @@ function build_markers(data) {
         if (v.coc_type == "shelter") {
             infoWindowContent_obj = ['<div class="info_content">' +
               '<h3>'+v.name+'</h3>' +
-              '<p>Beds left '+v.time_left+'</p>' +
+              '<p>Beds left '+v.beds_available+'</p>' +
               '<button onclick="omwFunction()"> Im on my way </button>' +
               '</div>'];
             marker_images.push("/static/icons/shelter.png");
