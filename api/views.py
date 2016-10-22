@@ -12,17 +12,32 @@ def json_custom_parser(obj):
     else:
         raise TypeError(obj)
 
-"""
-    url(r'^get_client_info$', "api.views.get_client_info"),
-    url(r'^update_client_info$', "api.views.update_client_info"),
-    url(r'^get_cocs$', "api.views.get_cocs"),
-    url(r'^ask_for_help$', "api.views.ask_for_help"),
-    url(r'^search$', "api.views.search"),
-    url(r'^log_note$', "api.views.log_note"),
-    url(r'^get_coc_info$', "api.views.get_coc_info"),
-    url(r'^grant_bed$', "api.views.grant_bed"),
-    url(r'^submit_referral$', "api.views.submit_referral"),
-"""
+
+def ask_for_help(request):
+    return HttpResponse(json.dumps({
+        "status": "success"
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+def log_note(request):
+    return HttpResponse(json.dumps({
+        "status": "success"
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+def grant_bed(request):
+    return HttpResponse(json.dumps({
+        "status": "success"
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+def submit_referral(request):
+    return HttpResponse(json.dumps({
+        "status": "success"
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+def update_client_info(request):
+    return HttpResponse(json.dumps({
+        "status": "success"
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
 
 def get_client_info(request):
     client_id = request.GET['client_id']
@@ -88,14 +103,112 @@ def get_client_info(request):
             "created": datetime.datetime.now()
         }
     ]
+
+    data = random.choice(client_info)
+    data['events'] = client_events
+
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": {
-            "client_info": random.choice(client_info),
-            "client_events": client_events
-        }
+        "data": data
     }, default=json_custom_parser), content_type='application/json', status=200)
 
+def get_clients(request):
+
+    client_info = [
+        {
+            "name": "Joe Bob",
+            "phone_number": "(909) 790-7900",
+            "ssn": "633 64 6333",
+            "dob": "10/31/1933",
+            "gender": "Male",
+            "pregnant": False,
+            "race": "Asian",
+            "marital_status": "Single",
+            "number_of_children": 0,
+            "veteran": True,
+            "occupation": "Sheet Metal Worker",
+            "education": "Masters in Sheet Metal",
+            "sex_offender": False
+        },
+        {
+            "name": "Sally Sally",
+            "phone_number": "(909) 790-7900",
+            "ssn": "633 64 6333",
+            "dob": "10/31/1933",
+            "gender": "Female",
+            "pregnant": True,
+            "race": "African American",
+            "marital_status": "Married",
+            "number_of_children": 2,
+            "veteran": False,
+            "occupation": "Mother",
+            "education": "High School",
+            "sex_offender": False
+        }
+    ]
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": client_info
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
+def get_cocs(request):
+
+    coc_info = [
+        {
+            "name": "Shelter Nightly",
+            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
+            "latitude": "35.6894",
+            "longitude": "139.692",
+            "phone_number": "(909) 790-2903",
+            "beds_available": "80",
+            "beds_total": "100"
+        },
+        {
+            "name": "Medical Place",
+            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
+            "latitude": "35.8894",
+            "longitude": "139.692",
+            "phone_number": "(909) 790-2903",
+            "beds_available": "0",
+            "beds_total": "0"
+        }
+    ]
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": coc_info
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
+def get_coc_info(request):
+
+    coc_info = [
+        {
+            "name": "Shelter Nightly",
+            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
+            "latitude": "35.6894",
+            "longitude": "139.692",
+            "phone_number": "(909) 790-2903",
+            "beds_available": "80",
+            "beds_total": "100"
+        },
+        {
+            "name": "Medical Place",
+            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
+            "latitude": "35.8894",
+            "longitude": "139.692",
+            "phone_number": "(909) 790-2903",
+            "beds_available": "0",
+            "beds_total": "0"
+        }
+    ]
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": random.choice(coc_info)
+    }, default=json_custom_parser), content_type='application/json', status=200)
 
 
 def load_frontend(request):
