@@ -190,8 +190,8 @@
 },
 {
     "fields": {
-        "codename": "add_fish",
-        "name": "Can add Fish",
+        "codename": "add_event",
+        "name": "Can add Event",
         "content_type": 8
     },
     "model": "auth.permission",
@@ -199,8 +199,8 @@
 },
 {
     "fields": {
-        "codename": "change_fish",
-        "name": "Can change Fish",
+        "codename": "change_event",
+        "name": "Can change Event",
         "content_type": 8
     },
     "model": "auth.permission",
@@ -208,8 +208,8 @@
 },
 {
     "fields": {
-        "codename": "delete_fish",
-        "name": "Can delete Fish",
+        "codename": "delete_event",
+        "name": "Can delete Event",
         "content_type": 8
     },
     "model": "auth.permission",
@@ -217,8 +217,8 @@
 },
 {
     "fields": {
-        "codename": "add_event",
-        "name": "Can add Event",
+        "codename": "add_client",
+        "name": "Can add Client",
         "content_type": 9
     },
     "model": "auth.permission",
@@ -226,8 +226,8 @@
 },
 {
     "fields": {
-        "codename": "change_event",
-        "name": "Can change Event",
+        "codename": "change_client",
+        "name": "Can change Client",
         "content_type": 9
     },
     "model": "auth.permission",
@@ -235,8 +235,8 @@
 },
 {
     "fields": {
-        "codename": "delete_event",
-        "name": "Can delete Event",
+        "codename": "delete_client",
+        "name": "Can delete Client",
         "content_type": 9
     },
     "model": "auth.permission",
@@ -244,8 +244,8 @@
 },
 {
     "fields": {
-        "codename": "add_client",
-        "name": "Can add Client",
+        "codename": "add_coc",
+        "name": "Can add Coc",
         "content_type": 10
     },
     "model": "auth.permission",
@@ -253,8 +253,8 @@
 },
 {
     "fields": {
-        "codename": "change_client",
-        "name": "Can change Client",
+        "codename": "change_coc",
+        "name": "Can change Coc",
         "content_type": 10
     },
     "model": "auth.permission",
@@ -262,39 +262,12 @@
 },
 {
     "fields": {
-        "codename": "delete_client",
-        "name": "Can delete Client",
+        "codename": "delete_coc",
+        "name": "Can delete Coc",
         "content_type": 10
     },
     "model": "auth.permission",
     "pk": 30
-},
-{
-    "fields": {
-        "codename": "add_coc",
-        "name": "Can add Coc",
-        "content_type": 11
-    },
-    "model": "auth.permission",
-    "pk": 31
-},
-{
-    "fields": {
-        "codename": "change_coc",
-        "name": "Can change Coc",
-        "content_type": 11
-    },
-    "model": "auth.permission",
-    "pk": 32
-},
-{
-    "fields": {
-        "codename": "delete_coc",
-        "name": "Can delete Coc",
-        "content_type": 11
-    },
-    "model": "auth.permission",
-    "pk": 33
 },
 {
     "fields": {
@@ -304,12 +277,12 @@
         "is_active": true,
         "is_superuser": true,
         "is_staff": true,
-        "last_login": null,
+        "last_login": "2016-10-22T21:34:14.352",
         "groups": [],
         "user_permissions": [],
-        "password": "pbkdf2_sha256$20000$n3awH29HIqDJ$xcg5p6HaDuHnzG2dgnqG/+45lK+XeQeVvNPppHo2dBw=",
+        "password": "pbkdf2_sha256$20000$0XIKMpdKne1K$d3aqNCE5Y599jXwNgG0KbpnKqAeHMDo4l/dUCKEF3+Y=",
         "email": "d@b.com",
-        "date_joined": "2016-10-22T18:04:46.052"
+        "date_joined": "2016-10-22T21:34:02.086"
     },
     "model": "auth.user",
     "pk": 1
