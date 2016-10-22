@@ -40,9 +40,9 @@ def update_client_info(request):
 
 
 def get_client_info(request):
-    client_id = request.GET['client_id']
-    client_info = Client.objects.filter(id=client_id)
-    client_events = Event.objects.filter(client_id=client_id)
+    # client_id = request.GET['client_id']
+    # client_info = Client.objects.filter(id=client_id)
+    # client_events = Event.objects.filter(client_id=client_id)
 
     client_info = [
         {
@@ -82,7 +82,7 @@ def get_client_info(request):
             "coc_location_name": "Night Shelter",
             "coc_id": "12",
             "event_type": "shelter",
-            "client_id": client_id,
+            "client_id": 14,
             "details": "Given Bed",
             "created": datetime.datetime.now()
         },
@@ -90,7 +90,7 @@ def get_client_info(request):
             "coc_location_name": "Urgent Care",
             "coc_id": "2",
             "event_type": "referral",
-            "client_id": client_id,
+            "client_id": 13,
             "details": "Please assist this person, they need help",
             "created": datetime.datetime.now()
         },
@@ -98,7 +98,7 @@ def get_client_info(request):
             "coc_location_name": "Night Shelter",
             "coc_id": "12",
             "event_type": "note",
-            "client_id": client_id,
+            "client_id": 12,
             "details": "Note that upon a discussion with this person, we found out they have extensive experience in the food service industry",
             "created": datetime.datetime.now()
         }
