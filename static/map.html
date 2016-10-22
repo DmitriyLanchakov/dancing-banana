@@ -204,6 +204,12 @@ function build_markers(data) {
               '</div>'];
             marker_images.push("/static/icons/law.png");
         }
+        else if (v.coc_type == "charge") {
+            infoWindowContent_obj = ['<div class="info_content">' +
+              '<h3>'+v.name+'</h3>' +
+              '</div>'];
+            marker_images.push("/static/icons/charge.png");
+        }
 		else {
 		  console.log(v)
 		  alert("eh?");
