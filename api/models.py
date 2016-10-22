@@ -37,7 +37,9 @@ class Event(models.Model):
         app_label = "api"
 
 class Client(models.Model):
-    name = models.CharField(max_length=255, default='')
+    first_name = models.CharField(max_length=255, default='')
+    middle_name = models.CharField(max_length=255, default='')
+    last_name = models.CharField(max_length=255, default='')
     phone_number = models.CharField(max_length=255, default='')
     ssn = models.CharField(max_length=255, default='')
     dob = models.CharField(max_length=255, default='')
@@ -57,7 +59,7 @@ class Client(models.Model):
     modified = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % (self.name)
+        return u'%s' % (self.last_name)
 
     class Meta:
         verbose_name = 'Client'
