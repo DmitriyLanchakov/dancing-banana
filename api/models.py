@@ -20,13 +20,13 @@ class Fish(models.Model):
         app_label = "api"
 
 class Event(models.Model):
-    coc_location = models.CharField(max_length=255, default='')
+    coc_location_name = models.CharField(max_length=255, default='')
+    coc_location_id = models.CharField(max_length=255, default='')
     event_type = models.CharField(max_length=255, default='') #logged note, grabbed a bed, asked for help, was referred
     client_id = models.CharField(max_length=255, default='')
     details = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    modified = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % (self.name)
