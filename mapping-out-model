@@ -1,0 +1,57 @@
+CoC Home Page
+
+coc:
+- get total number of beds
+- get available number of beds
+- number of people on their way (this is saved on the front end)
+- update (add) one number of beds
+
+client
+- add client
+- get one client by name/phone number
+- update coc history (add coc to client profile)
+
+----------------------------------------------------------------------------------------
+
+Client Profile Page
+
+client bio:
+- get one by name/phone number
+- update client information
+
+Client Model:
+name: str
+phone number
+ssn
+dob
+gender
+pregnant?
+race
+marital status
+number of children
+veteran status: years of service, wars fought in (found in sample data set)
+occupation
+education
+sex offender?
+
+***	medical history
+	-disabilities
+	-chronic diseases
+	-drug/alcohol abuse
+
+
+admission date
+coc history
+	-coc name
+	-date of admission?
+services provided
+	-type of service
+	-date provided 
+	-comments from administrators
+history of actions/requests
+history of notes
+	-general comments about character/issues/likes/dislikes
+
+
+
+

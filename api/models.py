@@ -51,6 +51,7 @@ class Client(models.Model):
     education = models.CharField(max_length=255, default='')
     sex_offender = models.BooleanField(default=False)
 
+
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     modified = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -60,4 +61,25 @@ class Client(models.Model):
     class Meta:
         verbose_name = 'Client'
         verbose_name_plural = 'Clients'
+        app_label = "api"
+
+class Coc(models.Model):
+    name = models.CharField(max_length=255, default='')
+    address = models.CharField(max_length=255, default='')
+    latitude = models.CharField(max_length=255, default='')
+   	longitude = models.CharField(max_length=255, default='')
+    phone_number = models.CharField(max_length=255, default='')
+   	coc_type = models.CharField(max_length=255, default='')
+    # requirements = models.CharField(max_length=255, default='') # female-only, pregnant, male-only
+
+
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    modified = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+    class Meta:
+        verbose_name = 'Coc'
+        verbose_name_plural = 'Cocs'
         app_label = "api"
