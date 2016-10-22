@@ -1,5 +1,6 @@
 import os, sys
 import csv
+import json
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'hackathon.settings'
 import django
@@ -17,7 +18,7 @@ else:
 os.system("python manage.py migrate") #Create new db
 
 
-from api.models import Client
+from api.models import Client, Coc
 from dateutil import parser
 
 print "~~~~~~~~~~~~~~~~~"
@@ -55,6 +56,14 @@ with open('clients.csv', 'rb') as f:
             })
             new_client.save()
     print "Imported", i, "clients."
+
+with open('cocs.json', 'rb') as f:
+    json_data = json.loads(f.read())
+    for d in json_data:
+        new_coc = Coc(**d)
+        new_coc.save()
+    print "Imported", len(json_data), "Cocs."
+
 
 
 
