@@ -67,9 +67,9 @@ class Coc(models.Model):
     name = models.CharField(max_length=255, default='')
     address = models.CharField(max_length=255, default='')
     latitude = models.CharField(max_length=255, default='')
-   	longitude = models.CharField(max_length=255, default='')
+    longitude = models.CharField(max_length=255, default='')
     phone_number = models.CharField(max_length=255, default='')
-   	coc_type = models.CharField(max_length=255, default='')
+    coc_type = models.CharField(max_length=255, default='')
     # requirements = models.CharField(max_length=255, default='') # female-only, pregnant, male-only
 
 
