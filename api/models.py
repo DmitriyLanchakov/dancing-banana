@@ -22,7 +22,7 @@ class Fish(models.Model):
 class Event(models.Model):
     coc_location = models.CharField(max_length=255, default='')
     event_type = models.CharField(max_length=255, default='') #logged note, grabbed a bed, asked for help, was referred
-
+    client_id = models.CharField(max_length=255, default='')
     details = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -71,6 +71,8 @@ class Coc(models.Model):
     longitude = models.CharField(max_length=255, default='')
     phone_number = models.CharField(max_length=255, default='')
     coc_type = models.CharField(max_length=255, default='')
+    beds_available = models.IntegerField(blank=True, null=True, default=0) #cached
+    beds_total = models.IntegerField(blank=True, null=True, default=0) #cached
     # requirements = models.CharField(max_length=255, default='') # female-only, pregnant, male-only
 
 

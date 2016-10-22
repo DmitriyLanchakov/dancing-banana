@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 import datetime
 import json
-from api.models import Fish
+from api.models import Fish, Client, Event
 from django.http import HttpResponseRedirect
 
 def json_custom_parser(obj):
@@ -49,8 +49,19 @@ def get_fish(request):
         "status": "success",
         "data": list(fishies.values())
     }, default=json_custom_parser), content_type='application/json', status=200)
-    
-    
+
+def get_client_info(request):
+    client_info = Client.objects.filter(id=request.POST['client_id'])
+    client_events = Event.objects.filter(client_id=request.POST['client_id'])
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": {
+            "client_info": client_info,
+            "client_events": client_events
+        }
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
+
 def load_frontend(request):
     return HttpResponseRedirect("/static/index.html")
-
