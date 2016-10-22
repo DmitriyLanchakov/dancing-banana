@@ -1,110 +1,135 @@
 from django.http import HttpResponse
 import datetime
 import json
-from api.models import Client, Event
+from api.models import Client, Event, Coc
 from django.http import HttpResponseRedirect
-import random
+import collections
+from decimal import Decimal
+from django.forms.models import model_to_dict
+from django.db.models import F
 
 def json_custom_parser(obj):
-    if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
-        dot_ix = 19
+    if isinstance(obj, Decimal):
+        return str(obj)
+    elif not isinstance(obj, basestring) and isinstance(obj, collections.Iterable):
+        return list(obj)
+    elif isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
+        dot_ix = 19 # 'YYYY-MM-DDTHH:MM:SS.mmmmmm+HH:MM'.find('.')
         return obj.isoformat()[:dot_ix]
     else:
         raise TypeError(obj)
 
-
 def ask_for_help(request):
+    """
+    user_input = {
+        "client_id": "",
+        "coc_location_id": "",
+        "details": ""
+    }
+    """
+    user_input = request.body
+    user_input['referred_from_coc_location_id'] = -1 #From client
+    user_input['event_type'] = "referral"
+    Event(**user_input).save()
+
     return HttpResponse(json.dumps({
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def log_note(request):
+    """
+    user_input = {
+        "client_id": "",
+        "coc_location_id": "",
+        "details": ""
+    }
+    """
+    user_input = json.loads(request.body)
+    user_input['event_type'] = "note"
+    Event(**user_input).save()
+
     return HttpResponse(json.dumps({
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def grant_bed(request):
+    """
+    user_input = {
+        "client_id": "",
+        "coc_location_id": "",
+        "details": ""
+    }
+    """
+    user_input = json.loads(request.body)
+    user_input['event_type'] = "shelter"
+    Event(**user_input).save()
+
+    coc_loc = Coc.objects.get(id=user_input['coc_location_id'])
+    coc_loc.beds_available = F('beds_available') - 1
+    coc_loc.save()
+
     return HttpResponse(json.dumps({
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def submit_referral(request):
+    """
+    user_input = {
+        "client_id": "",
+        "coc_location_id": "",
+        "referred_from_coc_location_id": "",
+        "details": ""
+    }
+    """
+    user_input = json.loads(request.body)
+    user_input['event_type'] = "referral"
+    Event(**user_input).save()
+
     return HttpResponse(json.dumps({
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def update_client_info(request):
+    """
+    user_input = {
+        "phone_number": "",
+        "first_name": "Robert",
+        "last_name": "Hanks",
+        "middle_name": "J",
+        "pregnant": False,
+        "dob": "1/1/1953",
+        "gender": "Male",
+        "veteran": True,
+        "marital_status": "",
+        "education": "",
+        "sex_offender": False,
+        "ssn": "100090077",
+        "race": "Black",
+        "number_of_children": 0,
+        "id": 90077,
+        "occupation": ""
+    }
+    """
+    updates = json.loads(request.body)
+    Client.objects.filter(id=updates['id']).update(**updates)
+
     return HttpResponse(json.dumps({
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
 def get_client_info(request):
-    client_id = request.GET['client_id']
-    client_info = Client.objects.filter(id=client_id)
+    """
+    user_input = {
+        "id": "3"
+    }
+    """
+    user_input = json.loads(request.body)
+    client_id = user_input['id']
+    client_info = Client.objects.get(id=client_id)
     client_events = Event.objects.filter(client_id=client_id)
 
-    client_info = [
-        {
-            "name": "Joe Bob",
-            "phone_number": "(909) 790-7900",
-            "ssn": "633 64 6333",
-            "dob": "10/31/1933",
-            "gender": "Male",
-            "pregnant": False,
-            "race": "Asian",
-            "marital_status": "Single",
-            "number_of_children": 0,
-            "veteran": True,
-            "occupation": "Sheet Metal Worker",
-            "education": "Masters in Sheet Metal",
-            "sex_offender": False
-        },
-        {
-            "name": "Sally Sally",
-            "phone_number": "(909) 790-7900",
-            "ssn": "633 64 6333",
-            "dob": "10/31/1933",
-            "gender": "Female",
-            "pregnant": True,
-            "race": "African American",
-            "marital_status": "Married",
-            "number_of_children": 2,
-            "veteran": False,
-            "occupation": "Mother",
-            "education": "High School",
-            "sex_offender": False
-        }
-    ]
-
-    client_events = [
-        {
-            "coc_location_name": "Night Shelter",
-            "coc_id": "12",
-            "event_type": "shelter",
-            "client_id": client_id,
-            "details": "Given Bed",
-            "created": datetime.datetime.now()
-        },
-        {
-            "coc_location_name": "Urgent Care",
-            "coc_id": "2",
-            "event_type": "referral",
-            "client_id": client_id,
-            "details": "Please assist this person, they need help",
-            "created": datetime.datetime.now()
-        },
-        {
-            "coc_location_name": "Night Shelter",
-            "coc_id": "12",
-            "event_type": "note",
-            "client_id": client_id,
-            "details": "Note that upon a discussion with this person, we found out they have extensive experience in the food service industry",
-            "created": datetime.datetime.now()
-        }
-    ]
-
-    data = random.choice(client_info)
+    data = model_to_dict(client_info)
     data['events'] = client_events
 
     return HttpResponse(json.dumps({
@@ -113,101 +138,42 @@ def get_client_info(request):
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def get_clients(request):
-
-    client_info = [
-        {
-            "name": "Joe Bob",
-            "phone_number": "(909) 790-7900",
-            "ssn": "633 64 6333",
-            "dob": "10/31/1933",
-            "gender": "Male",
-            "pregnant": False,
-            "race": "Asian",
-            "marital_status": "Single",
-            "number_of_children": 0,
-            "veteran": True,
-            "occupation": "Sheet Metal Worker",
-            "education": "Masters in Sheet Metal",
-            "sex_offender": False
-        },
-        {
-            "name": "Sally Sally",
-            "phone_number": "(909) 790-7900",
-            "ssn": "633 64 6333",
-            "dob": "10/31/1933",
-            "gender": "Female",
-            "pregnant": True,
-            "race": "African American",
-            "marital_status": "Married",
-            "number_of_children": 2,
-            "veteran": False,
-            "occupation": "Mother",
-            "education": "High School",
-            "sex_offender": False
-        }
-    ]
+    #todo add filters
+    results = []
+    for c in Client.objects.all():
+        results.append(model_to_dict(c))
 
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": client_info
+        "data": results
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
 def get_cocs(request):
-
-    coc_info = [
-        {
-            "name": "Shelter Nightly",
-            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
-            "latitude": "35.6894",
-            "longitude": "139.692",
-            "phone_number": "(909) 790-2903",
-            "beds_available": "80",
-            "beds_total": "100"
-        },
-        {
-            "name": "Medical Place",
-            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
-            "latitude": "35.8894",
-            "longitude": "139.692",
-            "phone_number": "(909) 790-2903",
-            "beds_available": "0",
-            "beds_total": "0"
-        }
-    ]
+    #Todo, add filters
+    results = []
+    for c in Coc.objects.all():
+        results.append(model_to_dict(c))
 
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": coc_info
+        "data": results
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
 def get_coc_info(request):
+    """
+    user_input = {
+        "id": 3
+    }
+    """
+    user_input = json.loads(request.body)
 
-    coc_info = [
-        {
-            "name": "Shelter Nightly",
-            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
-            "latitude": "35.6894",
-            "longitude": "139.692",
-            "phone_number": "(909) 790-2903",
-            "beds_available": "80",
-            "beds_total": "100"
-        },
-        {
-            "name": "Medical Place",
-            "address": "360 Calmgrove Ave, Saint Louis, MO 63101",
-            "latitude": "35.8894",
-            "longitude": "139.692",
-            "phone_number": "(909) 790-2903",
-            "beds_available": "0",
-            "beds_total": "0"
-        }
-    ]
+    data = Coc.objects.get(id=user_input['coc_location_id'])
 
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": random.choice(coc_info)
+        "data": model_to_dict(data)
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
