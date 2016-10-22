@@ -50,6 +50,7 @@ class Client(models.Model):
     occupation = models.CharField(max_length=255, default='')
     education = models.CharField(max_length=255, default='')
     sex_offender = models.BooleanField(default=False)
+    # possibly add medical history
 
 
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
