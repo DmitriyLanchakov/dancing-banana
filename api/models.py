@@ -70,6 +70,8 @@ class Coc(models.Model):
     longitude = models.CharField(max_length=255, default='')
     phone_number = models.CharField(max_length=255, default='')
     coc_type = models.CharField(max_length=255, default='')
+    beds_available = models.IntegerField(blank=True, null=True, default=0) #cached
+    beds_total = models.IntegerField(blank=True, null=True, default=0) #cached
     # requirements = models.CharField(max_length=255, default='') # female-only, pregnant, male-only
 
 
