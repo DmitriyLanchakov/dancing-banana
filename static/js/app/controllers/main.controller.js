@@ -2,8 +2,8 @@
 
 app.controller('MainCtrl', function ($scope, $state, $rootScope, ClientFactory, CocFactory, coc) {
 
-	$rootScope.coc = coc.data;
-	console.log($rootScope.coc)
+	localStorage.setItem('coc_id', coc.data.id);
+  localStorage.setItem('coc_name', coc.data.name);
 
 	// Coc Information
 	$scope.name = coc.data.name;
