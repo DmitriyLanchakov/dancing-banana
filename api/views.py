@@ -434,7 +434,28 @@ def sms_received(request):
     #Find best matching CoC
     #Todo add filters for single male/female/vet etc
     #Todo add filter by distance from location
-    best_shelter = Coc.objects.filter(coc_type="shelter").order_by('?')[0]
+
+    coc_results = Coc.objects.filter(coc_type="shelter")
+
+    is_veteran = request.session['special_status'] == "veteran"
+    is_pregnant = request.session['special_status'] == "pregnant"
+
+    if request.session['status'] == "single_male":
+        filtz = Q(allow_single_men=True)
+        if is_veteran:
+            filtz = filtz | Q(allow_veteran=True)
+        coc_results = coc_results.filter(filtz)
+
+    if request.session['status'] == "single_female":
+        filtz = Q(allow_single_women=True)
+        if is_pregnant:
+            filtz = filtz | Q(require_pregnant=True)
+        coc_results = coc_results.filter(filtz)
+
+    if request.session['status'] == "family":
+        coc_results = coc_results.filter(allow_family=True)
+
+    best_shelter = coc_results[0]
 
     twil = '<?xml version="1.0" encoding="UTF-8"?> \
             <Response> \
