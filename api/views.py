@@ -267,7 +267,7 @@ def sms_received(request):
 
     twil = '<?xml version="1.0" encoding="UTF-8"?> \
             <Response> \
-                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+best_shelter.beds_available+' beds available.</Message> \
+                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available.</Message> \
             </Response> \
             '
     return HttpResponse(twil, content_type='application/xml', status=200)
