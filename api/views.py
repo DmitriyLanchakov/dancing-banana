@@ -26,12 +26,36 @@ def json_custom_parser(obj):
 def ask_for_help(request):
     """
     user_input = {
-        "client_id": "",
-        "coc_location_id": "",
-        "details": ""
+        "client_name": "",
+        "client_phone": "",
+        "coc_location_id": ""
     }
     """
-    user_input = request.body
+    #Attempt to find matching phone number. If none found, create new user.
+    phone_number = ''.join([c for c in request.POST['client_phone'] if c in '1234567890'])
+    existing_client = Client.objects.filter(phone_number=phone_number)
+    if existing_client.exists():
+        client_id = existing_client[0].id
+    else:
+        name_pieces = request.POST['client_name'].split(' ')
+        first_name = name_pieces[0]
+        last_name = ""
+        if len(name_pieces) > 1:
+            last_name = ' '.join(name_pieces[1:])
+        new_c = Client(**{
+            "first_name": first_name,
+            "middle_name": "",
+            "last_name": last_name,
+            "phone_number": phone_number
+        })
+        new_c.save()
+        client_id = new_c.id
+
+    user_input = {
+        "client_id": client_id,
+        "coc_location_id": request.POST['coc_location_id'],
+        "details": ""
+    }
     user_input['referred_from_coc_location_id'] = -1 #From client
     user_input['event_type'] = "referral"
     Event(**user_input).save()
@@ -182,6 +206,8 @@ def get_clients(request):
     name_pieces = user_input['name'].split(' ')[0]
     first_name = name_pieces[0]
     last_name = name_pieces[-1]
+
+    user_input['phone_number'] = ''.join([c for c in user_input['phone_number'] if c in '1234567890'])
 
     #Matching phone numbers
     for c in Client.objects.filter(phone_number=user_input['phone_number']):
