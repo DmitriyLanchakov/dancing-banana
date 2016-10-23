@@ -1,6 +1,9 @@
 'use-strict'
 
-app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory, coc) {
+app.controller('MainCtrl', function ($scope, $state, $rootScope, ClientFactory, CocFactory, coc) {
+
+	$rootScope.coc = coc.data;
+	console.log($rootScope.coc)
 
 	// Coc Information
 	$scope.name = coc.data.name;
@@ -11,8 +14,6 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory, 
 	$scope.client = {};
 
 	$scope.search = function() {
-		console.log('search', $scope.client)
-
 		// Search for a client
 
 		// go to the client-search-results state (make this a child state?)

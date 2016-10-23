@@ -1,7 +1,9 @@
 'use-strict'
 
-app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, CocFactory, client) {
+app.controller('ClientProfileCtrl', function ($scope, $state, $rootScope, ClientFactory, CocFactory, client) {
 
+
+	$scope.coc = $rootScope.coc;
 	$scope.client = client.data;
 	$scope.events = {};
 
@@ -12,12 +14,11 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 	}
 
 	$scope.grant_bed = function() {
-		console.log('you got a bed')
+		console.log('you got a bed', $scope.coc.id)
 		
 		// TODO: 
-		// get the coc_id
 		// make a 'success' modal
-		CocFactory.grant_bed($scope.client.id, 9).then(function(){
+		CocFactory.grant_bed($scope.client.id, $scope.coc.id).then(function(){
 			alert('A bed has been reserved for this client.');
 			$state.go('shelterHome')
 		})
@@ -26,8 +27,9 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 
 	$scope.log_notes = function(details) {
 		// update events in state
+		// TODO: make sure that coc name is updated
 		var event = {
-			// coc_location_id: GET COC_ID
+			coc_name: $scope.coc.name,
 			event_type: 'logged note',
 			client_id: $scope.client.id,
 			details: details
@@ -35,7 +37,7 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 		$scope.client.events.push(event);
 
 		// update event in database
-		ClientFactory.log_note($scope.client.id, 9, details)
+		ClientFactory.log_note($scope.client.id, $scope.coc, details)
 
 	}
 
