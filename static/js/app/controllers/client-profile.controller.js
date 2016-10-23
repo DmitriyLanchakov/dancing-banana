@@ -38,7 +38,7 @@ app.controller('ClientProfileCtrl', function ($scope, $state, $rootScope, Client
 		$scope.client.events.push(event);
 
 		// update event in database
-		ClientFactory.log_note($scope.client.id, $scope.coc, details)
+		ClientFactory.log_note($scope.client.id, $scope.coc.id, details)
 
 	}
 
