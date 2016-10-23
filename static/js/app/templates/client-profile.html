@@ -144,25 +144,11 @@
           <div class="timeline-label">
             <h2>{{ event.coc_name }}</h2>
             <p>{{ event.created | date:"short"}}</p>
-            <p>{{ event.event_type }}</p>
-            <p>{{ event.details }}</p>
+            <p>{{ event.event_type|uppercase }}: {{ event.details }}</p>
           </div>
         </div>
       </article>
 
-      <article class="timeline-entry">
-        <div class="timeline-entry-inner">
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-camera"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-        </div>
-        </article>
 
 
         <article class="timeline-entry begin">
