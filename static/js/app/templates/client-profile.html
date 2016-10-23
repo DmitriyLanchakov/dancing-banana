@@ -1,50 +1,139 @@
-<ul class="nav nav-pills">
-  <li class="active"><a href="#">Home</a></li>
-  <li><a href="#">Grant Bed</a></li>
-  <li><a href="#">Referral</a></li>
-</ul>
+<div class="">
+  <ul class="nav nav-pills">
+    <li><a href="#">Home</a></li>
+    <li><a ng-click="grant_bed()">Grant Bed</a></li>
+    <li><a href="">Referral</a></li>
+    <li><a data-toggle="modal" data-target="#helpModal">Log Notes</a></li>
+  </ul>
+</div>
 
 <br>
 
 <div class="text-center">
-  <div style="font-family:Verdana" class="well"><b>CLIENT PROFILE</b></div>
+  <div style="font-family:Verdana" class="well"><b>{{ client.first_name + ' ' + client.last_name }}</b></div>
 </div>
 
 <br>
+
+<!-- start form -->
+<div class="panel-body">    
+      
+  <form id="signupform" class="form-horizontal" role="form" ng-submit="submitEdit()">
+<!-- TODO: fix client.name -->
+    <div class="form-group">
+        <label for="Name" class="col-md-3 control-label">Name</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="First Middle Last" value="{{ client.first_name + ' ' + client.last_name}}" ng-model="client.first_name">
+        </div>
+    </div>
+        
+    <div class="form-group">
+        <label for="Date of Birth" class="col-md-3 control-label">Date of Birth</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" name="Date of Birth" placeholder="MM/DD/YY" value="{{ client.dob }}" ng-model="client.dob">
+        </div>
+    </div>
     
-<div class="input-group">
-  <span class="input-group-addon" id="basic-addon1">Name</span>
-  <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
+      <div class="form-group">
+        <label for="SSN" class="col-md-3 control-label">SSN</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" name="SSN" placeholder="xxx-xx-xxxx" value="{{ client.ssn }}" ng-model="client.ssn">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="Phone Number" class="col-md-3 control-label">Phone Number</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" name="Phone Number" placeholder="(xxx)xxx-xxxx" value="{{ client.phone_number }}" ng-model="client.phone_number">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="Gender" class="col-md-3 control-label">Gender</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" name="Gender" placeholder="Male or Female" value="{{ client.gender }}" ng-model="client.gender">
+        </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="Marital Status" class="col-md-3 control-label">Marital Status</label>
+      <div class="col-md-9">
+          <input type="text" class="form-control" name="Marital Status" placeholder="Single or Married" value="{{ client.marital_status }}" ng-model="client.marital_status">
+      </div>
+    </div>
+     
+    <div class="form-group">
+      <label for="Number of Children" class="col-md-3 control-label">Number of Children</label>
+      <div class="col-md-9">
+          <input type="text" class="form-control" name="Number of Children" placeholder="#" value="{{ client.number_of_children }}" ng-model="client.number_of_children">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Race" class="col-md-3 control-label">Race</label>
+      <div class="col-md-9">
+          <input type="text" class="form-control" name="Race" placeholder="(e.g. Hispanic, White, etc.)" value="{{ client.race }}" ng-model="client.race">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="Occupation" class="col-md-3 control-label">Occupation</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="Occupation" placeholder="(e.g Student, Laborer)" value="{{ client.occupation }}" ng-model="client.occupation">
+      </div>
+    </div>
+    
+    
+    <div class="form-group">
+      <label for="Education" class="col-md-3 control-label">Education</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="Education" placeholder="(e.g High School, College)" value="{{ client.education }}" ng-model="client.education">
+      </div>
+    </div>
+     
+    <div class="form-group">
+      <label for="Pregnant?" class="col-md-3 control-label">Pregnant:</label>    
+     <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.pregnant" value="true">Yes</label>
+      <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.pregnant" value="false">No</label>
+    </div>
+
+    <div class="form-group">
+            <label for="Veteran Status" class="col-md-3 control-label">Veteran:</label>    
+       <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.veteran" value="true">Yes</label>
+        <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.veteran" value="false">No</label>
+    </div>
+        
+    <div class="form-group">
+            <label for="Registered Sex Offender" class="col-md-3 control-label">Registered Sex Offender:</label>    
+       <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.sex_offender" value="true">Yes</label>
+        <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.sex_offender" value="false">No</label>
+    </div>    
+      
+      
+    <div class="form-group">
+        <!-- Button -->                                        
+        <div class="col-md-offset-3 col-md-9">
+            <button id="btn-signup" type="button" class="btn btn-info" ng-click="submitEdit()"><i class="icon-hand-right"></i> &nbspEdit Client</button>
+        </div>
+    </div> 
+                   
+  </form>
 </div>
 
-<div class="input-group"> 
-  <span class="input-group-addon" id="basic-addon1">Phone Number</span>
-  <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1">
-</div>
+
+
+
+<!-- end form -->
 
 <br><br>
 
-
-<Ul>  
-  <label class="checkbox-inline"><input type="checkbox" value="">Male</label> 
-  <label class="checkbox-inline"><input type="checkbox" value="">Female</label>
-  <label class="checkbox-inline"><input type="checkbox" value="">Youth</label>  
-  <label class="checkbox-inline"><input type="checkbox" value="">Single</label> 
-  <label class="checkbox-inline"><input type="checkbox" value="">Married</label>
-  <label class="checkbox-inline"><input type="checkbox" value="">Veteran</label>  
-</ul> 
-<br>
-
 <h4 id= "history"><b>CLIENT HISTORY</b></h4>
-
 
 <div class="container">
 	<div class="row">
     
     <div class="timeline-centered">
-
-      <article class="timeline-entry">
-
+      <article class="timeline-entry" ng-repeat="event in client.events">
         <div class="timeline-entry-inner">
 
           <div class="timeline-icon bg-primary">
@@ -52,57 +141,16 @@
           </div>
 
           <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <article class="timeline-entry">
-
-        <div class="timeline-entry-inner">
-
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-suitcase"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
+            <h2>{{ event.coc_name }}</h2>
+            <p>{{ event.created }}</p>
+            <p>{{ event.event_type }}</p>
+            <p>{{ event.details }}</p>
           </div>
         </div>
-
       </article>
 
-
       <article class="timeline-entry">
-
         <div class="timeline-entry-inner">
-
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-location"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <article class="timeline-entry">
-
-        <div class="timeline-entry-inner">
-
           <div class="timeline-icon bg-primary">
             <i class="entypo-camera"></i>
           </div>
@@ -113,24 +161,41 @@
             <p>comments/behavior</p>
           </div>
         </div>
+        </article>
 
-      </article>
 
-
-      <article class="timeline-entry begin">
-
-        <div class="timeline-entry-inner">
-
-          <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-            <i class="entypo-flight"></i> <a href="#">+</a>
+        <article class="timeline-entry begin">
+          <div class="timeline-entry-inner">
+            <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+              <i class="entypo-flight"></i> <a data-toggle="modal" data-target="#helpModal">+</a>
+            </div>
           </div>
-          
-
-        </div>
-
-      </article>
+        </article>
 
     </div>
     
 	</div>
+</div>
+
+<!-- Modal for logging notes -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+       <h4 class="modal-title" id="myModalLabel">Add notes about {{ client.first_name + ' ' + client.last_name }}</h4>
+     </div>
+     <div class="modal-body">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">Notes</span>
+          <textarea id="comments" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" ng-model="notes"></textarea> 
+        </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       <button type="button" class="btn btn-primary" data-loading-text="Loading..." ng-click="log_notes(notes)"  data-dismiss="modal">Submit Notes</button>
+     </div>
+   </div>
+ </div>
 </div>

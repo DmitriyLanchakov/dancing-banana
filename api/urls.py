@@ -4,7 +4,9 @@ urlpatterns = patterns('',
     url(r'^get_client_info$', "api.views.get_client_info"),
     url(r'^update_client_info$', "api.views.update_client_info"),
     url(r'^get_clients$', "api.views.get_clients"),
+    url(r'^create_new_client$', "api.views.create_new_client"),
     url(r'^sms_received$', "api.views.sms_received"),
+
 
     url(r'^get_coc_info$', "api.views.get_coc_info"),
     url(r'^get_cocs$', "api.views.get_cocs"),

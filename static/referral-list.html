@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <style> 
+    <style>
       body {
-        padding-top: 50px;
-        padding-bottom: 20px;
+        padding: 10px;
       }
-      
+
       body {
-        
-    background: url("icons/light.png") no-repeat center center fixed; 
+
+    background: url("icons/light.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    
-        
+
+
       }
-      
-      
-    
+
     .caption {
         width:100%;
         bottom: .3rem;
@@ -47,52 +44,164 @@
         color: #fff;
         -webkit-font-smoothing: antialiased;
     }
-      
-      
-      
+
+
+
     </style>
+    <script>
+      function select_referral_type(code, name) {
+        $('#page_title').html("Loading...");
+        var post_data = {
+              food:0,
+              law:0,
+              shelter:0,
+              housing:0,
+              medical:0,
+        };
+        post_data[code] = 1;
+        $.ajax({
+            type: 'POST',
+            url: '/get_cocs',
+            data: post_data,
+            dataType: 'json',
+            success: function (data) {
+              console.log(data);
+              $('#page_title').html(name);
+              $('#specific_referral').show();
+              $('#referral_buckets').hide();
+
+              var htmlz = "";
+
+              for (var i=0; i<data.data.length; i++) {
+
+                htmlz += '<a href="#" class="list-group-item " style="cursor: default;">';
+                htmlz += '<span class="pull-right">';
+                htmlz += '<button class="btn btn-lg btn-danger" style="cursor: pointer;">REFER</button>';
+                htmlz += '</span>';
+                htmlz += '<div class="pull-left form-control-inline">';
+                htmlz += '<h4 class="list-group-item-heading">'+data.data[i].name+'</h4>';
+                htmlz += '<p class="list-group-item-text">'+data.data[i].address+'</p>';
+                htmlz += '<p class="list-group-item-text">'+data.data[i].phone_number+'</p>';
+                if (data.data[i].beds_available) {
+                  htmlz += '<p class="list-group-item-text">Beds Available: '+data.data[i].beds_available+'</p>';
+                }
+                htmlz += '</div><div class="clearfix"></div></a>';
+              }
+
+              if (!data.data.length) {
+                htmlz = "No matching institutions found."
+              }
+
+
+
+              $('#spec_ref_list_group').html(htmlz);
+
+
+
+            },
+            error: function() {
+                console.log('Error while attempting to retrieve get_cocs');
+            }
+        });
+      }
+    </script>
   </head>
 
   <body>
-    <div class="header">
-        <img align="middle" src="icons/compassion1.png" alt="logo" height="50" width="400">
 
-    </div>
-    <br>
-    
     <ul class="nav nav-pills">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">Return to Profile</a></li>
     </ul>
-    
+
     <br>
-    
-      
+
+
     <div class="text-center">
-<div style="font-family:Verdana" class="well"><b>REFERRALS</b></div>
+<div style="font-family:Verdana" class="well"><b id="page_title">REFERRALS</b></div>
 </div>
 
 
-<div class="row" style="padding: 10px">
-  
+<div class="container" id="specific_referral" style="display:none;">
+
+    		<div class="list-group" id="spec_ref_list_group">
+
+				<a href="#" class="list-group-item " style="cursor: default;">
+                        <span class="pull-right">
+                          <button class="btn btn-lg btn-danger" style="cursor: pointer;">REFER</button>
+                        </span>
+
+
+			        <div class="pull-left form-control-inline">
+						<h4 class="list-group-item-heading">Lydia's House</h4>
+						<p class="list-group-item-text">address & distance</p>
+						<p class="list-group-item-text">(877) 278-1212</p>
+			        </div>
+
+			        <div class="clearfix"></div>
+
+			    </a>
+
+                <a href="#" class="list-group-item " style="cursor: default;">
+                        <span class="pull-right">
+                          <button class="btn btn-lg btn-danger" style="cursor: pointer;">REFER</button>
+                        </span>
+
+
+			        <div class="pull-left form-control-inline">
+						<h4 class="list-group-item-heading">Sean's Corner</h4>
+						<p class="list-group-item-text">address & distance</p>
+						<p class="list-group-item-text">(223)666-9876</p>
+						<p class="list-group-item-text">
+						    <ul class="nav nav-pills" role="tablist">
+                              <li role="presentation">Number of Beds Available Now <span class="badge">3</span></li>
+                            </ul>
+                        </p>
+			        </div>
+
+			        <div class="clearfix"></div>
+
+			    </a>
+
+			        <a href="#" class="list-group-item " style="cursor: default;">
+                        <span class="pull-right">
+                          <button class="btn btn-lg btn-danger" style="cursor: pointer;">REFER</button>
+                        </span>
+
+
+			        <div class="pull-left form-control-inline">
+						<h4 class="list-group-item-heading">Grace Shelter</h4>
+						<p class="list-group-item-text">address & distance</p>
+						<p class="list-group-item-text">(555)666-5555</p>
+						<p class="list-group-item-text">
+						    <ul class="nav nav-pills" role="tablist">
+                              <li role="presentation">Number of Beds Available Now <span class="badge">3</span></li>
+                            </ul>
+                        </p>
+			        </div>
+
+			        <div class="clearfix"></div>
+
+			    </a>
+
+
+			</div>
+
+
+</div>
+<div class="row" style="padding: 10px" id="referral_buckets">
+
   <div class="col-xs-6 col-md-3 thumbnail text-center">
-       <a href="#">
+       <a href="#" onclick="select_referral_type('housing', 'Permanent/Temporary Housing')">
       <img src="icons/housing.png" alt="HTML5 Icon" class="img-thumbnail">
      <div class="caption">
         <h4>Permanent/Temporary Housing</h4>
     </div>
  </a>
   </div>
-<div class="col-xs-6 col-md-3 thumbnail text-center">
-    <a href="#">
-      <img src="icons/veteran.png" alt ="HTML5 Icon" class="img-thumbnail">
-    <div class="caption">
-        <h4>Veteran Services</h4>
-    </div>
-    </a>
-  </div>
+
   <div class="col-xs-6 col-md-3 thumbnail text-center">
-    <a href="#">
+    <a href="#" onclick="select_referral_type('shelter', 'Shelters')">
       <img src="icons/shelter.png" alt="HTML5 Icon" class="img-thumbnail">
     <div class="caption">
         <h4>Shelters</h4>
@@ -100,7 +209,7 @@
     </a>
   </div>
     <div class="col-xs-6 col-md-3 thumbnail text-center">
-    <a href="#">
+    <a href="#" onclick="select_referral_type('medical', 'Medical Services')">
       <img src="icons/medical.png" alt="HTML5 Icon" class="img-thumbnail">
     <div class="caption">
         <h4>Medical Services</h4>
@@ -108,15 +217,23 @@
     </a>
   </div>
     <div class="col-xs-6 col-md-3 thumbnail text-center">
-    <a href="#">
+    <a href="#" onclick="select_referral_type('law', 'Legal Services')">
       <img src="icons/law.png" alt="HTML5 Icon" class="img-thumbnail">
     <div class="caption">
         <h4>Legal Services</h4>
     </div>
     </a>
   </div>
+<div class="col-xs-6 col-md-3 thumbnail text-center">
+    <a href="#" onclick="select_referral_type('veteran', 'Veteran Services')">
+      <img src="icons/veteran.png" alt ="HTML5 Icon" class="img-thumbnail">
+    <div class="caption">
+        <h4>Veteran Services</h4>
+    </div>
+    </a>
+  </div>
   <div class="col-xs-6 col-md-3 thumbnail text-center">
-    <a href="#">
+    <a href="#" onclick="select_referral_type('food', 'Food Pantries/Soup Kitchens')">
       <img src="icons/food.png" alt="HTML5 Icon" class="img-thumbnail">
     <div class="caption">
         <h4>Food Pantries/Soup Kitchens</h4>
@@ -132,6 +249,6 @@
     <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
     <script src="js/bootstrap.min.js"></script>
   </body>
-  
-  
+
+
 </html>

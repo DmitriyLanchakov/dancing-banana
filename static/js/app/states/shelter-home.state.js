@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
     controller: 'MainCtrl',
     resolve: {
         coc: function(CocFactory) {
-            var coc_id = 10;
+            var coc_id = 1;
             return CocFactory.get_coc_info(coc_id);
         }
     }

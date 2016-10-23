@@ -118,6 +118,35 @@ def submit_referral(request):
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
+
+def create_new_client(request):
+    """
+    user_input = {
+        "client_name": "",
+        "client_phone": ""
+    }
+    """
+    import urllib
+    phone_number = ''.join([c for c in urllib.unquote(request.POST['client_phone']) if c in '1234567890'])
+    name_pieces = urllib.unquote(request.POST['client_name']).split(' ')
+    first_name = name_pieces[0]
+    last_name = ""
+    if len(name_pieces) > 1:
+        last_name = ' '.join(name_pieces[1:])
+    new_c = Client(**{
+        "first_name": first_name,
+        "middle_name": "",
+        "last_name": last_name,
+        "phone_number": phone_number
+    })
+    new_c.save()
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": new_c.id
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
 def update_client_info(request):
     """
     user_input = {
@@ -184,6 +213,7 @@ def get_client_info(request):
         ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
         ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        ev['created'] = ce.created
         data['events'].append(ev)
 
     return HttpResponse(json.dumps({
@@ -276,22 +306,22 @@ def get_cocs(request):
     if str(user_input['medical']) == "0":
         coc_results = coc_results.exclude(coc_type="medical")
 
-    is_veteran = str(user_input['veteran']) == "1"
-    is_pregnant = str(user_input['pregnant']) == "1"
+    is_veteran = str(user_input.get('veteran', '0')) == "1"
+    is_pregnant = str(user_input.get('pregnant', '0')) == "1"
 
-    if user_input['status'] == "single_male":
+    if user_input.get('status', '') == "single_male":
         filtz = Q(allow_single_men=True)
         if is_veteran:
             filtz = filtz | Q(allow_veteran=True)
         coc_results = coc_results.filter(filtz)
 
-    if user_input['status'] == "single_female":
+    if user_input.get('status', '') == "single_female":
         filtz = Q(allow_single_women=True)
         if is_pregnant:
             filtz = filtz | Q(require_pregnant=True)
         coc_results = coc_results.filter(filtz)
 
-    if user_input['status'] == "family":
+    if user_input.get('status', '') == "family":
         coc_results = coc_results.filter(allow_family=True)
 
     results = []
@@ -310,10 +340,7 @@ def get_coc_info(request):
         "id": 3
     }
     """
-    #user_input = json.loads(request.body)
-    user_input = {
-        "id": 10
-    }
+    user_input = json.loads(request.body)
 
     data = Coc.objects.get(id=user_input['id'])
     data = model_to_dict(Coc.objects.get(id=user_input['id']))
@@ -345,6 +372,7 @@ def get_coc_info(request):
         ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
         ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        ev['created'] = ce.created
         data['events'].append(ev)
 
     return HttpResponse(json.dumps({
@@ -370,6 +398,7 @@ def sms_received(request):
             logout(request)
     else:
         request.session['last_validated'] = datetime.datetime.now().isoformat()
+
 
     input_from_user = request.POST.get('Body', '')
 
@@ -431,39 +460,87 @@ def sms_received(request):
                     '''
             return HttpResponse(twil, content_type='application/xml', status=200)
 
-    #Find best matching CoC
-    #Todo add filters for single male/female/vet etc
-    #Todo add filter by distance from location
+        #Find best matching CoC
+        #Todo add filters for single male/female/vet etc
+        #Todo add filter by distance from location
 
-    coc_results = Coc.objects.filter(coc_type="shelter")
+        coc_results = Coc.objects.filter(coc_type="shelter")
 
-    is_veteran = request.session['special_status'] == "veteran"
-    is_pregnant = request.session['special_status'] == "pregnant"
+        is_veteran = request.session['special_status'] == "veteran"
+        is_pregnant = request.session['special_status'] == "pregnant"
 
-    if request.session['status'] == "single_male":
-        filtz = Q(allow_single_men=True)
-        if is_veteran:
-            filtz = filtz | Q(allow_veteran=True)
-        coc_results = coc_results.filter(filtz)
+        if request.session['status'] == "single_male":
+            filtz = Q(allow_single_men=True)
+            if is_veteran:
+                filtz = filtz | Q(allow_veteran=True)
+            coc_results = coc_results.filter(filtz)
 
-    if request.session['status'] == "single_female":
-        filtz = Q(allow_single_women=True)
-        if is_pregnant:
-            filtz = filtz | Q(require_pregnant=True)
-        coc_results = coc_results.filter(filtz)
+        if request.session['status'] == "single_female":
+            filtz = Q(allow_single_women=True)
+            if is_pregnant:
+                filtz = filtz | Q(require_pregnant=True)
+            coc_results = coc_results.filter(filtz)
 
-    if request.session['status'] == "family":
-        coc_results = coc_results.filter(allow_family=True)
+        if request.session['status'] == "family":
+            coc_results = coc_results.filter(allow_family=True)
 
-    print "***Total matching results...", len(coc_results), dict(request.session)
+        print "***Total matching results...", len(coc_results), dict(request.session)
 
-    best_shelter = coc_results[0]
+        if len(coc_results) < 1:
+            twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                    <Response>
+                        <Message method="GET">Unfortunately we are space at a shelter for you right now. Sorry.</Message>
+                    </Response>
+                    '''
+            return HttpResponse(twil, content_type='application/xml', status=200)
 
-    twil = '<?xml version="1.0" encoding="UTF-8"?> \
-            <Response> \
-                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available.</Message> \
-            </Response> \
-            '
-    twil = twil.replace("&", "&amp;")
-    print "FINAL", twil
-    return HttpResponse(twil, content_type='application/xml', status=200)
+        best_shelter = coc_results[0]
+        request.session['best_shelter'] = best_shelter.id
+
+        twil = '<?xml version="1.0" encoding="UTF-8"?> \
+                <Response> \
+                    <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available. To let them know you\'re coming, reply to this message with your name.</Message> \
+                </Response> \
+                '
+        twil = twil.replace("&", "&amp;")
+        return HttpResponse(twil, content_type='application/xml', status=200)
+    else:
+
+        #Attempt to find matching phone number. If none found, create new user.
+        phone_number = request.POST.get('From', '')[-10:]
+        existing_client = Client.objects.filter(phone_number=phone_number)
+        if existing_client.exists():
+            client_id = existing_client[0].id
+        else:
+            name_pieces = input_from_user.split(' ')
+            first_name = name_pieces[0]
+            last_name = ""
+            if len(name_pieces) > 1:
+                last_name = ' '.join(name_pieces[1:])
+            new_c = Client(**{
+                "first_name": first_name,
+                "middle_name": "",
+                "last_name": last_name,
+                "phone_number": phone_number
+            })
+            new_c.save()
+            client_id = new_c.id
+
+        user_input = {
+            "client_id": client_id,
+            "coc_location_id": request.session['best_shelter'],
+            "details": ""
+        }
+        user_input['referred_from_coc_location_id'] = -1 #From client
+        user_input['event_type'] = "referral"
+        print "saving new user event...", user_input
+        Event(**user_input).save()
+
+        twil = '<?xml version="1.0" encoding="UTF-8"?> \
+                <Response> \
+                    <Message method="GET">Thanks, we let them know you are on your way.</Message> \
+                </Response> \
+                '
+        twil = twil.replace("&", "&amp;")
+        return HttpResponse(twil, content_type='application/xml', status=200)
+

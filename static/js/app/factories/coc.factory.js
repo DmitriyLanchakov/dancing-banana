@@ -20,7 +20,7 @@ app.factory('CocFactory', function ($http) {
       // TODO: Update the number of beds available on the front end.
       return $http.put('../grant_bed', { 
           client_id: client_id, 
-          coc_id: coc_id 
+          coc_location_id: coc_id 
         }).then(getData);
     },
 
