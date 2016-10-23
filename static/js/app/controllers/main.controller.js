@@ -7,7 +7,6 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory, 
 	$scope.total_beds = coc.data.beds_total;
 	$scope.available_beds = coc.data.beds_available;
 	$scope.referrals_list = coc.data.events;
-	
 
 	$scope.client = {};
 

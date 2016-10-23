@@ -54,10 +54,10 @@
           </thead>
       <tbody>
         <tr ng-repeat="referral in referrals_list">
-          <td>Stefani Silver</td>
-          <td>Client</td>
-          <td>October 22, 2016 11:43am</td>
-          <td>(999)999-9999</td>
+          <td>{{ referral.client_name }}</td>
+          <td>{{ referral.coc_name }}</td>
+          <td>{{ referral.created }}</td>
+          <td>{{ referral.client_phone_number }}</td>
         </tr>
         <tr>
           <td>Jill Kooyman</td>
