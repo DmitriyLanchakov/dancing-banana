@@ -306,22 +306,22 @@ def get_cocs(request):
     if str(user_input['medical']) == "0":
         coc_results = coc_results.exclude(coc_type="medical")
 
-    is_veteran = str(user_input['veteran']) == "1"
-    is_pregnant = str(user_input['pregnant']) == "1"
+    is_veteran = str(user_input.get('veteran', '0')) == "1"
+    is_pregnant = str(user_input.get('pregnant', '0')) == "1"
 
-    if user_input['status'] == "single_male":
+    if user_input.get('status', '') == "single_male":
         filtz = Q(allow_single_men=True)
         if is_veteran:
             filtz = filtz | Q(allow_veteran=True)
         coc_results = coc_results.filter(filtz)
 
-    if user_input['status'] == "single_female":
+    if user_input.get('status', '') == "single_female":
         filtz = Q(allow_single_women=True)
         if is_pregnant:
             filtz = filtz | Q(require_pregnant=True)
         coc_results = coc_results.filter(filtz)
 
-    if user_input['status'] == "family":
+    if user_input.get('status', '') == "family":
         coc_results = coc_results.filter(allow_family=True)
 
     results = []
