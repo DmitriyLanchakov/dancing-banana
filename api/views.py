@@ -455,6 +455,8 @@ def sms_received(request):
     if request.session['status'] == "family":
         coc_results = coc_results.filter(allow_family=True)
 
+    print "***Total matching results...", len(coc_results), dict(request.session)
+
     best_shelter = coc_results[0]
 
     twil = '<?xml version="1.0" encoding="UTF-8"?> \
