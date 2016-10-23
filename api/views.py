@@ -190,19 +190,19 @@ def get_clients(request):
             results.append(model_to_dict(c))
 
     #Matching Full Names
-    for c in Client.objects.filter(first_name=first_name, last_name=last_name):
+    for c in Client.objects.filter(first_name__iexact=first_name, last_name__iexact=last_name):
         if c['id'] not in matches: #block duplicates
             matches[c['id']] = 1
             results.append(model_to_dict(c))
 
     #Matching Last Names
-    for c in Client.objects.filter(last_name=last_name):
+    for c in Client.objects.filter(last_name__iexact=last_name):
         if c['id'] not in matches: #block duplicates
             matches[c['id']] = 1
             results.append(model_to_dict(c))
 
     #Matching First Names
-    for c in Client.objects.filter(first_name=first_name):
+    for c in Client.objects.filter(first_name__iexact=first_name):
         if c['id'] not in matches: #block duplicates
             matches[c['id']] = 1
             results.append(model_to_dict(c))
