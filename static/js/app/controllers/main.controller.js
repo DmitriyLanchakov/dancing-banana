@@ -25,28 +25,30 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory) 
 	// Get total number of beds, available beds, and list of referrals
 
 	// get it through the url query
-	// function getParameterByName(name, url) {
- //    if (!url) {
- //      url = window.location.href;
- //    }
- //    name = name.replace(/[\[\]]/g, "\\$&");
- //    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
- //        results = regex.exec(url);
- //    if (!results) return null;
- //    if (!results[2]) return '';
- //    return decodeURIComponent(results[2].replace(/\+/g, " "));
-	// }
+	function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
 
-	// var coc_id = getParameterByName('id'); 
+	var coc_id = getParameterByName('id'); 
+	console.log(coc_id);
 
-	
-	// CocFactory.get_coc_info(coc_id)
-	// 	.then(function() {
-	// 		// display information on page
-	// 		$scope.total_beds;
-	// 		$scope.available_beds;
-	// 		$scope.referrals_list;
-	// 	})
+
+	CocFactory.get_coc_info(coc_id)
+		.then(function(coc) {
+			// display information on page
+			console.log(coc);
+			$scope.total_beds;
+			$scope.available_beds;
+			$scope.referrals_list;
+		})
 
 	
 

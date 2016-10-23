@@ -174,7 +174,7 @@ def get_coc_info(request):
     """
     user_input = json.loads(request.body)
 
-    data = Coc.objects.get(id=user_input['coc_location_id'])
+    data = Coc.objects.get(id=user_input['id'])
 
     return HttpResponse(json.dumps({
         "status": "success",
