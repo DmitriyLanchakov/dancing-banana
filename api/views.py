@@ -219,7 +219,10 @@ def get_cocs(request):
         ???
     }
     """
-    user_input = json.loads(request.body)
+    if request.body:
+        user_input = json.loads(request.body)
+    else:
+        user_input = dict(request.POST)
 
     results = []
     for c in Coc.objects.all():
