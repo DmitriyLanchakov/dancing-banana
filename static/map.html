@@ -173,7 +173,7 @@ function submit_help_request(){
 		data: post_data,
 		dataType: 'json',
 		success: function (data) {
-		  alert("Help request submitted! Someone will be in contact with you soon.")
+		  alert("CoC has been notified!")
 		},
 		error: function() {
 			console.log('Error while attempting to retrieve get_cocs');
@@ -193,7 +193,7 @@ function submit_omw_request(){
 		data: post_data,
 		dataType: 'json',
 		success: function (data) {
-		  alert("Shelter notified you are on your way!")
+		  alert("CoC has been notified!")
 		},
 		error: function() {
 			console.log('Error while attempting to retrieve get_cocs');
@@ -219,7 +219,7 @@ function build_markers(data) {
 
             infoWindowContent_obj = ['<div class="info_content">' +
               '<h3>'+v.name+'</h3>' +
-              '<button class="btn btn-primary" onclick="request_help_id='+v.id+';" data-toggle="modal" data-target="#helpModal"> Request Help </button>' +
+              '<button class="btn btn-primary" onclick="request_help_id='+v.id+';" data-toggle="modal" data-target="#omwModal"> Request Help </button>' +
               '</div>'];
             marker_images.push("/static/icons/medical.png");
         }
@@ -232,7 +232,7 @@ function build_markers(data) {
         else if (v.coc_type == "housing") {
             infoWindowContent_obj = ['<div class="info_content">' +
               '<h3>'+v.name+'</h3>' +
-              '<button class="btn btn-primary" onclick="request_help_id='+v.id+';" data-toggle="modal" data-target="#helpModal"> Request Help </button>' +
+              '<button class="btn btn-primary" onclick="request_help_id='+v.id+';" data-toggle="modal" data-target="#omwModal"> Request Help </button>' +
               '</div>'];
             marker_images.push("/static/icons/housing.png");
         }
@@ -392,7 +392,7 @@ function build_markers(data) {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Request Help</h4>
+        <h4 class="modal-title" id="myModalLabel">CoC</h4>
       </div>
       <div class="modal-body">
 		  <div class="input-group">
