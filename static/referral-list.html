@@ -151,17 +151,22 @@ function go_to_home() {
 
   <body>
 
-          <div class="header">
-              <!-- <img src="icons/compassion1.png" alt="logo" height="50" width="400"> -->
-              <a href="#" onclick="return go_to_home()">
-          <img src="icons/compassion1.png" alt="logo" height="50" width="400">
-        </a>
-
-    <ul class="nav nav-pills" style="float:right;">
-        <!-- <li class="active"><a href="/static/index.html">Home</a></li> -->
-        <li class="active"><a href="#" onclick="return go_to_profile()">Return to Profile</a></li>
+<div class="header">
+      <a href="#" onclick="return go_to_home()">
+        <img src="icons/compassion1.png" alt="logo" height="50" width="400">
+      </a>
+  <div class="navbar navbar-light bg-faded" style="float:right;">
+    <ul class="nav navbar-nav" style="width=100%">
+      <a href="#" onclick="return go_to_profile()"><button class="btn btn-default" >Return to Profile</button></a>
     </ul>
-          </div>
+  </div>
+    <!-- <img src="icons/compassion1.png" alt="logo" height="50" width="400"> -->
+
+    <!-- <ul class="nav nav-pills" style="float:right;">
+    <a href="#" onclick="return go_to_profile()"><button>Return to Profile</button></a>
+    </ul> -->
+
+</div>
 
     <br>
 
