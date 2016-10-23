@@ -9,7 +9,7 @@
 </div>
 
 <br>
-   
+
 <table class="table table-list-search">
   <thead>
     <tr>
@@ -29,8 +29,32 @@
       <td>{{ client.race }}</td>
     </tr>
   </tbody>
-</table>   
-		
+</table>
+
+<script>
+  function create_new_profile() {
+	var urlpieces = window.location.href.split('/');
+	var urlpieceslength = urlpieces.length;
+	var post_data = {
+	  "client_name": urlpieces[urlpieceslength-2],
+	  "client_phone": urlpieces[urlpieceslength-1]
+	};
+	$.ajax({
+		type: 'POST',
+		url: '/create_new_client',
+		data: post_data,
+		dataType: 'json',
+		success: function (data) {
+		  window.location.href = "#/client-profile/"+data.data;
+		  console.log(data);
+		},
+		error: function() {
+			console.log('Error while attempting to retrieve get_cocs');
+		}
+	});
+	return false;
+  }
+</script>
 <ul class="nav nav-pills nav-stacked">
-  <li role="presentation" class="active"><a href="#">Create a new profile</a></li>
+  <li role="presentation" class="active"><a href="#" onclick="return create_new_profile()">Create a new profile</a></li>
 </ul>

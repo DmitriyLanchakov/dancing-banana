@@ -118,6 +118,35 @@ def submit_referral(request):
         "status": "success"
     }, default=json_custom_parser), content_type='application/json', status=200)
 
+
+def create_new_client(request):
+    """
+    user_input = {
+        "client_name": "",
+        "client_phone": ""
+    }
+    """
+    import urllib
+    phone_number = ''.join([c for c in urllib.unquote(request.POST['client_phone']) if c in '1234567890'])
+    name_pieces = urllib.unquote(request.POST['client_name']).split(' ')
+    first_name = name_pieces[0]
+    last_name = ""
+    if len(name_pieces) > 1:
+        last_name = ' '.join(name_pieces[1:])
+    new_c = Client(**{
+        "first_name": first_name,
+        "middle_name": "",
+        "last_name": last_name,
+        "phone_number": phone_number
+    })
+    new_c.save()
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": new_c.id
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
 def update_client_info(request):
     """
     user_input = {
