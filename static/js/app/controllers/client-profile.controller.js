@@ -20,11 +20,15 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 			alert('A bed has been reserved for this client.');
 			$state.go('shelterHome')
 		})
-
-
 	}
 
-	// hook up log comment button
+	// $scope.refer = function() {
+	// 	$state.go('', {
+			
+	// 	})
+	// }
+
+
 	$scope.log_notes = function(details) {
 		// update events in state
 		var event = {
