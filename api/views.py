@@ -399,6 +399,8 @@ def sms_received(request):
     else:
         request.session['last_validated'] = datetime.datetime.now().isoformat()
 
+    print "request.POST", request.POST
+
     input_from_user = request.POST.get('Body', '')
 
     if input_from_user.lower() == "restart":
@@ -459,39 +461,94 @@ def sms_received(request):
                     '''
             return HttpResponse(twil, content_type='application/xml', status=200)
 
-    #Find best matching CoC
-    #Todo add filters for single male/female/vet etc
-    #Todo add filter by distance from location
+        #Find best matching CoC
+        #Todo add filters for single male/female/vet etc
+        #Todo add filter by distance from location
 
-    coc_results = Coc.objects.filter(coc_type="shelter")
+        coc_results = Coc.objects.filter(coc_type="shelter")
 
-    is_veteran = request.session['special_status'] == "veteran"
-    is_pregnant = request.session['special_status'] == "pregnant"
+        is_veteran = request.session['special_status'] == "veteran"
+        is_pregnant = request.session['special_status'] == "pregnant"
 
-    if request.session['status'] == "single_male":
-        filtz = Q(allow_single_men=True)
-        if is_veteran:
-            filtz = filtz | Q(allow_veteran=True)
-        coc_results = coc_results.filter(filtz)
+        if request.session['status'] == "single_male":
+            filtz = Q(allow_single_men=True)
+            if is_veteran:
+                filtz = filtz | Q(allow_veteran=True)
+            coc_results = coc_results.filter(filtz)
 
-    if request.session['status'] == "single_female":
-        filtz = Q(allow_single_women=True)
-        if is_pregnant:
-            filtz = filtz | Q(require_pregnant=True)
-        coc_results = coc_results.filter(filtz)
+        if request.session['status'] == "single_female":
+            filtz = Q(allow_single_women=True)
+            if is_pregnant:
+                filtz = filtz | Q(require_pregnant=True)
+            coc_results = coc_results.filter(filtz)
 
-    if request.session['status'] == "family":
-        coc_results = coc_results.filter(allow_family=True)
+        if request.session['status'] == "family":
+            coc_results = coc_results.filter(allow_family=True)
 
-    print "***Total matching results...", len(coc_results), dict(request.session)
+        print "***Total matching results...", len(coc_results), dict(request.session)
 
-    best_shelter = coc_results[0]
+        if len(coc_results) < 1:
+            twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                    <Response>
+                        <Message method="GET">Unfortunately we are space at a shelter for you right now. Sorry.</Message>
+                    </Response>
+                    '''
+            return HttpResponse(twil, content_type='application/xml', status=200)
 
-    twil = '<?xml version="1.0" encoding="UTF-8"?> \
-            <Response> \
-                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available.</Message> \
-            </Response> \
-            '
-    twil = twil.replace("&", "&amp;")
-    print "FINAL", twil
-    return HttpResponse(twil, content_type='application/xml', status=200)
+        best_shelter = coc_results[0]
+
+        twil = '<?xml version="1.0" encoding="UTF-8"?> \
+                <Response> \
+                    <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available. To let them know you\'re coming, reply to this message with your name.</Message> \
+                </Response> \
+                '
+        twil = twil.replace("&", "&amp;")
+        return HttpResponse(twil, content_type='application/xml', status=200)
+    else:
+
+
+        """
+        user_input = {
+            "client_name": "",
+            "client_phone": "",
+            "coc_location_id": ""
+        }
+        """
+
+        #Attempt to find matching phone number. If none found, create new user.
+        phone_number = ''.join([c for c in request.POST['client_phone'] if c in '1234567890'])
+        existing_client = Client.objects.filter(phone_number=phone_number)
+        if existing_client.exists():
+            client_id = existing_client[0].id
+        else:
+            name_pieces = input_from_user.split(' ')
+            first_name = name_pieces[0]
+            last_name = ""
+            if len(name_pieces) > 1:
+                last_name = ' '.join(name_pieces[1:])
+            new_c = Client(**{
+                "first_name": first_name,
+                "middle_name": "",
+                "last_name": last_name,
+                "phone_number": phone_number
+            })
+            new_c.save()
+            client_id = new_c.id
+
+        user_input = {
+            "client_id": client_id,
+            "coc_location_id": request.POST['coc_location_id'],
+            "details": ""
+        }
+        user_input['referred_from_coc_location_id'] = -1 #From client
+        user_input['event_type'] = "referral"
+        Event(**user_input).save()
+
+        twil = '<?xml version="1.0" encoding="UTF-8"?> \
+                <Response> \
+                    <Message method="GET">Thanks, we let them know you are on your way.</Message> \
+                </Response> \
+                '
+        twil = twil.replace("&", "&amp;")
+        return HttpResponse(twil, content_type='application/xml', status=200)
+
