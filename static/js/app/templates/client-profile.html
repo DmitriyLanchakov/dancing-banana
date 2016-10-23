@@ -16,8 +16,8 @@
 <br>
 
 <!-- start form -->
-<div class="panel-body">    
-      
+<div class="panel-body">
+
   <form id="signupform" class="form-horizontal" role="form" ng-submit="submitEdit()">
 <!-- TODO: fix client.name -->
     <div class="form-group">
@@ -26,21 +26,21 @@
             <input type="text" class="form-control" placeholder="First Middle Last" value="{{ client.first_name + ' ' + client.last_name}}" ng-model="client.first_name">
         </div>
     </div>
-        
+
     <div class="form-group">
         <label for="Date of Birth" class="col-md-3 control-label">Date of Birth</label>
         <div class="col-md-9">
             <input type="text" class="form-control" name="Date of Birth" placeholder="MM/DD/YY" value="{{ client.dob }}" ng-model="client.dob">
         </div>
     </div>
-    
+
       <div class="form-group">
         <label for="SSN" class="col-md-3 control-label">SSN</label>
         <div class="col-md-9">
             <input type="text" class="form-control" name="SSN" placeholder="xxx-xx-xxxx" value="{{ client.ssn }}" ng-model="client.ssn">
         </div>
     </div>
-    
+
     <!-- TODO: make phone number required -->
     <div class="form-group">
         <label for="Phone Number" class="col-md-3 control-label">Phone Number</label>
@@ -48,21 +48,21 @@
             <input type="text" class="form-control" name="Phone Number" placeholder="(xxx)xxx-xxxx" required value="{{ client.phone_number }}" ng-model="client.phone_number">
         </div>
     </div>
-    
+
     <div class="form-group">
         <label for="Gender" class="col-md-3 control-label">Gender</label>
         <div class="col-md-9">
             <input type="text" class="form-control" name="Gender" placeholder="Male or Female" value="{{ client.gender }}" ng-model="client.gender">
         </div>
     </div>
-    
+
     <div class="form-group">
       <label for="Marital Status" class="col-md-3 control-label">Marital Status</label>
       <div class="col-md-9">
           <input type="text" class="form-control" name="Marital Status" placeholder="Single or Married" value="{{ client.marital_status }}" ng-model="client.marital_status">
       </div>
     </div>
-     
+
     <div class="form-group">
       <label for="Number of Children" class="col-md-3 control-label">Number of Children</label>
       <div class="col-md-9">
@@ -76,48 +76,48 @@
           <input type="text" class="form-control" name="Race" placeholder="(e.g. Hispanic, White, etc.)" value="{{ client.race }}" ng-model="client.race">
       </div>
     </div>
-    
+
     <div class="form-group">
       <label for="Occupation" class="col-md-3 control-label">Occupation</label>
       <div class="col-md-9">
         <input type="text" class="form-control" name="Occupation" placeholder="(e.g Student, Laborer)" value="{{ client.occupation }}" ng-model="client.occupation">
       </div>
     </div>
-    
-    
+
+
     <div class="form-group">
       <label for="Education" class="col-md-3 control-label">Education</label>
       <div class="col-md-9">
         <input type="text" class="form-control" name="Education" placeholder="(e.g High School, College)" value="{{ client.education }}" ng-model="client.education">
       </div>
     </div>
-     
+
     <div class="form-group">
-      <label for="Pregnant?" class="col-md-3 control-label">Pregnant:</label>    
+      <label for="Pregnant?" class="col-md-3 control-label">Pregnant:</label>
      <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.pregnant" value="true">Yes</label>
       <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.pregnant" value="false">No</label>
     </div>
 
     <div class="form-group">
-            <label for="Veteran Status" class="col-md-3 control-label">Veteran:</label>    
-       <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.veteran" value="true">Yes</label>
-        <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.veteran" value="false">No</label>
+            <label for="Veteran Status" class="col-md-3 control-label">Veteran:</label>
+       <label class="radio-inline"><input type="radio" name="optradio2" ng-model="client.veteran" value="true">Yes</label>
+        <label class="radio-inline"><input type="radio" name="optradio2" ng-model="client.veteran" value="false">No</label>
     </div>
-        
+
     <div class="form-group">
-            <label for="Registered Sex Offender" class="col-md-3 control-label">Registered Sex Offender:</label>    
-       <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.sex_offender" value="true">Yes</label>
-        <label class="radio-inline"><input type="radio" name="optradio" ng-model="client.sex_offender" value="false">No</label>
-    </div>    
-      
-      
+            <label for="Registered Sex Offender" class="col-md-3 control-label">Registered Sex Offender:</label>
+       <label class="radio-inline"><input type="radio" name="optradio3" ng-model="client.sex_offender" value="true">Yes</label>
+        <label class="radio-inline"><input type="radio" name="optradio3" ng-model="client.sex_offender" value="false">No</label>
+    </div>
+
+
     <div class="form-group">
-        <!-- Button -->                                        
+        <!-- Button -->
         <div class="col-md-offset-3 col-md-9">
             <button id="btn-signup" type="button" class="btn btn-info" ng-click="submitEdit()"><i class="icon-hand-right"></i> &nbspEdit Client</button>
         </div>
-    </div> 
-                   
+    </div>
+
   </form>
 </div>
 
@@ -132,7 +132,7 @@
 
 <div class="container">
 	<div class="row">
-    
+
     <div class="timeline-centered">
       <article class="timeline-entry" ng-repeat="event in client.events">
         <div class="timeline-entry-inner">
@@ -174,7 +174,7 @@
         </article>
 
     </div>
-    
+
 	</div>
 </div>
 
@@ -191,7 +191,7 @@
      <div class="modal-body">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1">Notes</span>
-          <textarea id="comments" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" ng-model="notes"></textarea> 
+          <textarea id="comments" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" ng-model="notes"></textarea>
         </div>
      <div class="modal-footer">
        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
