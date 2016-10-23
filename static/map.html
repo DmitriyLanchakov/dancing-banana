@@ -16,7 +16,7 @@
     #map_wrapper {
         height: 100%;
     }
-    
+
     #map_canvas {
         width: 100%;
         height: 100%;
@@ -26,9 +26,9 @@
         padding-top: 50px;
         padding-bottom: 20px;
     }
-      
-      
-    
+
+
+
     .caption {
         width:100%;
         bottom: .3rem;
@@ -39,14 +39,14 @@
         background: -o-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
         background: linear-gradient(to top, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
     }
-    
+
     .thumbnail {
         border: 0 none;
         box-shadow: none;
         margin:0;
         padding:0;
     }
-    
+
     .caption h4 {
         color: #fff;
         -webkit-font-smoothing: antialiased;
@@ -174,16 +174,16 @@ function build_map(location) {
 		bed: 1,
 		housing_assistance: 1
     };
-    if($("#filter_food").hasClass("toggle-off")) {
+    if(!$("#filter_food").is(':checked')) {
         post_data['food'] = 0;
     }
-    if($("#filter_lawyer").hasClass("toggle-off")) {
+    if(!$("#filter_lawyer").is(':checked')) {
         post_data['lawyer'] = 0;
     }
-    if($("#filter_bed").hasClass("toggle-off")) {
+    if(!$("#filter_bed").is(':checked')) {
         post_data['bed'] = 0;
     }
-    if($("#filter_housing_assistance").hasClass("toggle-off")) {
+    if(!$("#filter_housing_assistance").is(':checked')) {
         post_data['housing_assistance'] = 0;
     }
 	$.ajax({
