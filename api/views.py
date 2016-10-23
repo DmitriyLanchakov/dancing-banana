@@ -388,6 +388,8 @@ def load_frontend(request):
 @print_errors
 def sms_received(request):
 
+    print "request.POST", request.POST, dict(request.POST)
+
     #Automatically reset user's sessions if they haven't communicated in 5 minutes
     if 'last_validated' in request.session:
 
@@ -399,7 +401,6 @@ def sms_received(request):
     else:
         request.session['last_validated'] = datetime.datetime.now().isoformat()
 
-    print "request.POST", request.POST
 
     input_from_user = request.POST.get('Body', '')
 
@@ -496,6 +497,7 @@ def sms_received(request):
             return HttpResponse(twil, content_type='application/xml', status=200)
 
         best_shelter = coc_results[0]
+        request.session['best_shelter'] = best_shelter.id
 
         twil = '<?xml version="1.0" encoding="UTF-8"?> \
                 <Response> \
@@ -537,7 +539,7 @@ def sms_received(request):
 
         user_input = {
             "client_id": client_id,
-            "coc_location_id": request.POST['coc_location_id'],
+            "coc_location_id": request.session['best_shelter'],
             "details": ""
         }
         user_input['referred_from_coc_location_id'] = -1 #From client
