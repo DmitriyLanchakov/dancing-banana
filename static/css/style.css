@@ -12,6 +12,12 @@ img {
     vertical-align: middle;
 }
 
+.well {
+    font-family: "Verdana";
+    font-size: 20px;
+
+}
+
 #history{
     font-family: "Arial"
 }
