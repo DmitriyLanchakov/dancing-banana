@@ -38,15 +38,13 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory) 
 	}
 
 	var coc_id = getParameterByName('id'); 
-	console.log(coc_id);
-
 
 	CocFactory.get_coc_info(coc_id)
 		.then(function(coc) {
 			// display information on page
 			console.log(coc);
-			$scope.total_beds;
-			$scope.available_beds;
+			$scope.total_beds = coc.beds_total;
+			$scope.available_beds = coc.beds_available;
 			$scope.referrals_list;
 		})
 
