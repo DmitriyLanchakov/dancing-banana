@@ -89,12 +89,13 @@ def grant_bed(request):
     }
     """
     user_input = json.loads(request.body)
-    user_input['event_type'] = "shelter"
+    coc_loc = Coc.objects.get(id=user_input['coc_location_id'])
+    user_input['event_type'] = "bed" if coc_loc.coc_type == "shelter" else "checkin"
     Event(**user_input).save()
 
-    coc_loc = Coc.objects.get(id=user_input['coc_location_id'])
-    coc_loc.beds_available = F('beds_available') - 1
-    coc_loc.save()
+    if coc_loc.coc_type == "shelter":
+        coc_loc.beds_available = F('beds_available') - 1
+        coc_loc.save()
 
     return HttpResponse(json.dumps({
         "status": "success"
