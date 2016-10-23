@@ -7,6 +7,10 @@ import collections
 from decimal import Decimal
 from django.forms.models import model_to_dict
 from django.db.models import F
+from dateutil import parser
+from django.db.models import Q
+from django.contrib.auth import logout
+from custom_decorators import print_errors
 
 def json_custom_parser(obj):
     if isinstance(obj, Decimal):
@@ -124,6 +128,7 @@ def get_client_info(request):
         "id": "3"
     }
     """
+    print request.body
     user_input = json.loads(request.body)
     client_id = user_input['id']
     client_info = Client.objects.get(id=client_id)
@@ -179,3 +184,90 @@ def get_coc_info(request):
 
 def load_frontend(request):
     return HttpResponseRedirect("/static/index.html")
+
+
+@print_errors
+def sms_received(request):
+
+    #Automatically reset user's sessions if they haven't communicated in 5 minutes
+    if 'last_validated' in request.session:
+
+        session_expiry = (parser.parse(request.session.get('last_validated', '2000-01-01')) + datetime.timedelta(minutes=5))
+        if session_expiry < datetime.datetime.now():
+            print "Session expired! Session expiry time", session_expiry, " | current time", datetime.datetime.now()
+            del request.session['last_validated']
+            logout(request)
+    else:
+        request.session['last_validated'] = datetime.datetime.now().isoformat()
+
+    input_from_user = request.POST.get('Body', '')
+
+    if input_from_user.lower() == "restart":
+        logout(request)
+
+    if 'greeting' not in request.session:
+        #New user!
+        request.session['greeting'] = input_from_user
+        twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                <Response>
+                    <Message method="GET">Need shelter for the night? We can help. Reply to this message with your current location (e.g. 911 Washington Ave, Saint Louis, MO 63304)</Message>
+                </Response>
+                '''
+        return HttpResponse(twil, content_type='application/xml', status=200)
+    elif 'location' not in request.session:
+        request.session['location'] = input_from_user
+        twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                <Response>
+                    <Message method="GET">Reply to this with a number 1-3 corresponding to what best describes you. Are you a single male (1), a single female (2), or a family (3)?</Message>
+                </Response>
+                '''
+        return HttpResponse(twil, content_type='application/xml', status=200)
+    elif 'status' not in request.session:
+        if input_from_user == '1':
+            request.session['status'] = "single_male"
+        elif  input_from_user == '2':
+            request.session['status'] = "single_female"
+        elif  input_from_user == '3':
+            request.session['status'] = "family"
+        else:
+            twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                    <Response>
+                        <Message method="GET">Invalid response, must reply with a number 1-3. Are you a single male (1), a single female (2), or a family (3)?</Message>
+                    </Response>
+                    '''
+            return HttpResponse(twil, content_type='application/xml', status=200)
+
+        twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                <Response>
+                    <Message method="GET">Reply to this with a number 1-3 corresponding to what best describes you. Are you a veteran (1), pregnant (2), or neither (3)?</Message>
+                </Response>
+                '''
+        return HttpResponse(twil, content_type='application/xml', status=200)
+
+    elif 'special_status' not in request.session:
+
+        if input_from_user == '1':
+            request.session['special_status'] = "veteran"
+        elif  input_from_user == '2':
+            request.session['special_status'] = "pregnant"
+        elif  input_from_user == '3':
+            request.session['special_status'] = "none"
+        else:
+            twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                    <Response>
+                        <Message method="GET">Invalid response, must reply with a number 1-3. Are you a veteran (1), pregnant (2), or neither (3)?</Message>
+                    </Response>
+                    '''
+            return HttpResponse(twil, content_type='application/xml', status=200)
+
+    #Find best matching CoC
+    #Todo add filters for single male/female/vet etc
+    #Todo add filter by distance from location
+    best_shelter = Coc.objects.filter(coc_type="shelter").order_by('?')[0]
+
+    twil = '<?xml version="1.0" encoding="UTF-8"?> \
+            <Response> \
+                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+best_shelter.beds_available+' beds available.</Message> \
+            </Response> \
+            '
+    return HttpResponse(twil, content_type='application/xml', status=200)

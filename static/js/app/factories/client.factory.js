@@ -12,7 +12,7 @@ app.factory('ClientFactory', function ($http) {
 
     get_clients: function (client_name, phone_number) {
       // Search for client. Return a list of client matches
-      return $http.get('../get_clients', { 
+      return $http.post('../get_clients', { 
           name: client_name, 
           phone_number: phone_number
         }).then(getData);
@@ -20,7 +20,6 @@ app.factory('ClientFactory', function ($http) {
 
     update_client_info: function (client) {
       // Update or add client. Return success or failure.
-
         return $http.put('../update_client_info', { 
             client: client 
           }).then(getData);
@@ -28,9 +27,9 @@ app.factory('ClientFactory', function ($http) {
 
     get_client_info: function (client_id) {
       // Return client profile info and event info
-      return $http.get('../get_client_info', { 
+      return $http.post('../get_client_info', JSON.stringify({ 
           id: client_id 
-        }).then(getData);
+        })).then(getData);
     },
 
     log_note: function (client_id, coc_id, comments) {
