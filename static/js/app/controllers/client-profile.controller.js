@@ -7,6 +7,7 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 
 	$scope.submitEdit = function() {
 		// Update the client (Remember! this is an async function)
+		console.log($scope.client)
 		ClientFactory.update_client_info($scope.client)
 	}
 
@@ -21,12 +22,6 @@ app.controller('ClientProfileCtrl', function ($scope, $state, ClientFactory, Coc
 			$state.go('shelterHome')
 		})
 	}
-
-	// $scope.refer = function() {
-	// 	$state.go('', {
-			
-	// 	})
-	// }
 
 
 	$scope.log_notes = function(details) {
