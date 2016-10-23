@@ -129,14 +129,40 @@ def get_client_info(request):
         "id": "3"
     }
     """
-    print request.body
     user_input = json.loads(request.body)
     client_id = user_input['id']
-    client_info = Client.objects.get(id=client_id)
+    data = model_to_dict(Client.objects.get(id=client_id))
+    data['events'] = []
+
     client_events = Event.objects.filter(client_id=client_id)
 
-    data = model_to_dict(client_info)
-    data['events'] = client_events
+    coc_id_list = []
+    client_id_list = []
+    for ce in client_events:
+        coc_id_list.append(ce.coc_location_id)
+        client_id_list.append(ce.client_id)
+
+    coc_name_lookup = {}
+    print "coc_id_list", coc_id_list
+    for c in Coc.objects.filter(id__in=coc_id_list):
+        coc_name_lookup[str(c.id)] = c.name
+
+    print "coc_name_lookup", coc_name_lookup
+
+    client_deets_lookup = {}
+    for c in Client.objects.filter(id__in=client_id_list):
+        client_deets_lookup[str(c.id)] = {
+            "name": c.first_name + " " + c.middle_name + " " + c.last_name,
+            "phone_number": c.phone_number
+        }
+
+    for ce in client_events:
+        ev = model_to_dict(ce)
+        print "ev", ev
+        ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
+        ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
+        ev['phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        data['events'].append(ev)
 
     return HttpResponse(json.dumps({
         "status": "success",
@@ -144,18 +170,6 @@ def get_client_info(request):
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 def get_clients(request):
-    #todo add filters
-    results = []
-    for c in Client.objects.all():
-        results.append(model_to_dict(c))
-
-    return HttpResponse(json.dumps({
-        "status": "success",
-        "data": results
-    }, default=json_custom_parser), content_type='application/json', status=200)
-
-
-def get_cocs(request):
     """
     user_input = {
         "phone": 3,
@@ -172,20 +186,47 @@ def get_cocs(request):
     first_name = name_pieces[0]
     last_name = name_pieces[-1]
 
-    #coc_results = coc_results.filter(Q(phone_number=user_input['phone_number']) | Q(income__isnull=True))
-
-
     #Matching phone numbers
-    for c in Coc.objects.filter(phone_number=user_input['phone_number']):
+    for c in Client.objects.filter(phone_number=user_input['phone_number']):
         if c['id'] not in matches: #block duplicates
             matches[c['id']] = 1
             results.append(model_to_dict(c))
 
     #Matching Full Names
-    for c in Coc.objects.filter(first_name=first_name, last_name=last_name):
+    for c in Client.objects.filter(first_name=first_name, last_name=last_name):
         if c['id'] not in matches: #block duplicates
             matches[c['id']] = 1
             results.append(model_to_dict(c))
+
+    #Matching Last Names
+    for c in Client.objects.filter(last_name=last_name):
+        if c['id'] not in matches: #block duplicates
+            matches[c['id']] = 1
+            results.append(model_to_dict(c))
+
+    #Matching First Names
+    for c in Client.objects.filter(first_name=first_name):
+        if c['id'] not in matches: #block duplicates
+            matches[c['id']] = 1
+            results.append(model_to_dict(c))
+
+    return HttpResponse(json.dumps({
+        "status": "success",
+        "data": results
+    }, default=json_custom_parser), content_type='application/json', status=200)
+
+
+def get_cocs(request):
+    """
+    user_input = {
+        ???
+    }
+    """
+    user_input = json.loads(request.body)
+
+    results = []
+    for c in Coc.objects.all():
+        results.append(model_to_dict(c))
 
     return HttpResponse(json.dumps({
         "status": "success",
