@@ -259,10 +259,7 @@ def get_coc_info(request):
         "id": 3
     }
     """
-    #user_input = json.loads(request.body)
-    user_input = {
-        "id": 10
-    }
+    user_input = json.loads(request.body)
 
     data = Coc.objects.get(id=user_input['id'])
     data = model_to_dict(Coc.objects.get(id=user_input['id']))

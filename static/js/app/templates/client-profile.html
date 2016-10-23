@@ -1,50 +1,54 @@
-<ul class="nav nav-pills">
-  <li class="active"><a href="#">Home</a></li>
-  <li><a href="#">Grant Bed</a></li>
-  <li><a href="#">Referral</a></li>
-</ul>
+<div class="">
+  <ul class="nav nav-pills">
+    <li><a href="#">Home</a></li>
+    <li><a ng-click="grant_bed()">Grant Bed</a></li>
+    <li><a>Referral</a></li>
+    <li><a data-toggle="modal" data-target="#helpModal">Log Notes</a></li>
+  </ul>
+</div>
 
 <br>
 
 <div class="text-center">
-  <div style="font-family:Verdana" class="well"><b>CLIENT PROFILE</b></div>
+  <div style="font-family:Verdana" class="well"><b>{{ client.first_name + ' ' + client.last_name }}</b></div>
 </div>
 
 <br>
     
-<div class="input-group">
-  <span class="input-group-addon" id="basic-addon1">Name</span>
-  <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
-</div>
+<div class="">
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Name</span>
+    <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
+  </div>
 
-<div class="input-group"> 
-  <span class="input-group-addon" id="basic-addon1">Phone Number</span>
-  <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1">
+  <div class="input-group"> 
+    <span class="input-group-addon" id="basic-addon1">Phone Number</span> 
+    <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1" value="name">
+  </div>
 </div>
 
 <br><br>
 
+<div class="">
+  <ul>  
+    <label class="checkbox-inline"><input type="checkbox" value="">Male</label> 
+    <label class="checkbox-inline"><input type="checkbox" value="">Female</label>
+    <label class="checkbox-inline"><input type="checkbox" value="">Youth</label>  
+    <label class="checkbox-inline"><input type="checkbox" value="">Single</label> 
+    <label class="checkbox-inline"><input type="checkbox" value="">Married</label>
+    <label class="checkbox-inline"><input type="checkbox" value="">Veteran</label>  
+  </ul> 
+</div>
 
-<Ul>  
-  <label class="checkbox-inline"><input type="checkbox" value="">Male</label> 
-  <label class="checkbox-inline"><input type="checkbox" value="">Female</label>
-  <label class="checkbox-inline"><input type="checkbox" value="">Youth</label>  
-  <label class="checkbox-inline"><input type="checkbox" value="">Single</label> 
-  <label class="checkbox-inline"><input type="checkbox" value="">Married</label>
-  <label class="checkbox-inline"><input type="checkbox" value="">Veteran</label>  
-</ul> 
 <br>
 
 <h4 id= "history"><b>CLIENT HISTORY</b></h4>
-
 
 <div class="container">
 	<div class="row">
     
     <div class="timeline-centered">
-
-      <article class="timeline-entry">
-
+      <article class="timeline-entry" ng-repeat="event in client.events">
         <div class="timeline-entry-inner">
 
           <div class="timeline-icon bg-primary">
@@ -52,57 +56,16 @@
           </div>
 
           <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <article class="timeline-entry">
-
-        <div class="timeline-entry-inner">
-
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-suitcase"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
+            <h2>{{ event.coc_name }}</h2>
+            <p>{{ event.created }}</p>
+            <p>{{ event.event_type }}</p>
+            <p>{{ event.details }}</p>
           </div>
         </div>
-
       </article>
 
-
       <article class="timeline-entry">
-
         <div class="timeline-entry-inner">
-
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-location"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <article class="timeline-entry">
-
-        <div class="timeline-entry-inner">
-
           <div class="timeline-icon bg-primary">
             <i class="entypo-camera"></i>
           </div>
@@ -113,24 +76,41 @@
             <p>comments/behavior</p>
           </div>
         </div>
+        </article>
 
-      </article>
 
-
-      <article class="timeline-entry begin">
-
-        <div class="timeline-entry-inner">
-
-          <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-            <i class="entypo-flight"></i> <a href="#">+</a>
+        <article class="timeline-entry begin">
+          <div class="timeline-entry-inner">
+            <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+              <i class="entypo-flight"></i> <a data-toggle="modal" data-target="#helpModal">+</a>
+            </div>
           </div>
-          
-
-        </div>
-
-      </article>
+        </article>
 
     </div>
     
 	</div>
+</div>
+
+<!-- Modal for logging notes -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+       <h4 class="modal-title" id="myModalLabel">Add notes about {{ client.first_name + ' ' + client.last_name }}</h4>
+     </div>
+     <div class="modal-body">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">Notes</span>
+          <textarea id="comments" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" ng-model="notes"></textarea> 
+        </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       <button type="button" class="btn btn-primary" data-loading-text="Loading..." ng-click="log_notes(notes)"  data-dismiss="modal">Submit Notes</button>
+     </div>
+   </div>
+ </div>
 </div>
