@@ -54,9 +54,9 @@
           </thead>
       <tbody>
         <tr ng-repeat="referral in referrals_list">
-          <td>{{ referral.client_name }}</td>
+          <td><a href="/static/index.html#/client-profile/{{ referral.client_id }}">{{ referral.client_name }}</a></td>
           <td>{{ referral.coc_name }}</td>
-          <td>{{ referral.created | date}}</td>
+          <td>{{ referral.created | date:"short"}}</td>
           <td>{{ referral.client_phone_number }}</td>
         </tr>
       </tbody>

@@ -110,7 +110,12 @@ def submit_referral(request):
         "details": ""
     }
     """
-    user_input = json.loads(request.body)
+    try:
+        user_input = json.loads(request.body)
+    except:
+        user_input = {}
+        for k in request.POST.keys():
+            user_input[k] = request.POST[k]
     user_input['event_type'] = "referral"
     Event(**user_input).save()
 
