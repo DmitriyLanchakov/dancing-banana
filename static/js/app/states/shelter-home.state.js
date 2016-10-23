@@ -3,9 +3,15 @@
 app.config(function ($stateProvider) {
 
   $stateProvider.state('shelterHome', {
-    url: '',
+    url: '', // hard coded for now to coc_id = 10
     templateUrl: 'js/app/templates/shelter-home.state.html',
-    controller: 'MainCtrl'
+    controller: 'MainCtrl',
+    resolve: {
+        coc: function(CocFactory) {
+            var coc_id = 10;
+            return CocFactory.get_coc_info(coc_id);
+        }
+    }
   });
 
 });
