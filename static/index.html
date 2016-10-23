@@ -23,7 +23,13 @@
     <script src="js/app/controllers/main.controller.js" defer></script>
     <script src="js/app/controllers/search.controller.js" defer></script>
     <script src="js/app/controllers/client-profile.controller.js" defer></script>
+<script>
 
+function go_to_home() {
+  window.location.href="/static/index.html#/coc_id/"+localStorage.getItem('coc_id');
+  return false;
+}
+</script>
     <style>
       body {
         padding-top: 10px;
@@ -44,7 +50,7 @@
   <body ng-app="Hobo App">
     <!-- TODO: figure out what the padding on the top is -->
     <div class="header">
-        <a href="/static/index.html">
+        <a href="#" onclick="return go_to_home()">
           <img src="icons/compassion1.png" alt="logo" height="50" width="400">
         </a>
     </div>
