@@ -10,7 +10,7 @@ class Event(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % (self.name)
+        return u'%s' % (self.client_id)
 
     class Meta:
         verbose_name = 'Event'

@@ -7,6 +7,7 @@
         "phone_number": "(314) 231-1515",
         "coc_type": "shelter",
         "beds_total": "174",
+        "beds_available": "174",
         "allow_single_men": false,
         "allow_single_women": true,
         "allow_family": true,
@@ -20,6 +21,7 @@
         "phone_number": "(314) 291-3857",
         "coc_type": "shelter",
         "beds_total": "29",
+        "beds_available": "29",
         "require_pregnant": false,
         "allow_single_men": false,
         "allow_single_women": true,
@@ -34,6 +36,7 @@
         "phone_number": "",
         "coc_type": "shelter",
         "beds_total": "125",
+        "beds_available": "125",
         "require_pregnant": false,
         "allow_single_men": true,
         "allow_single_women": false,
@@ -48,6 +51,7 @@
         "phone_number": "(314) 351-4590",
         "coc_type": "shelter",
         "beds_total": "18",
+        "beds_available": "18",
         "require_pregnant": true,
         "allow_single_men": false,
         "allow_single_women": true,
@@ -62,6 +66,7 @@
         "phone_number": "(314) 621-5520",
         "coc_type": "shelter",
         "beds_total": "18",
+        "beds_available": "18",
         "require_pregnant": false,
         "allow_single_men": true,
         "allow_single_women": false,
@@ -111,20 +116,6 @@
         "allow_veteran": true
     },
     {
-        "name": "St. Patrick Center",
-        "address": "800 N. Tucker Blvd. St. Louis, MO 63101",
-        "latitude": "38.633355",
-        "longitude": "-90.195691",
-        "phone_number": "(314) 802-0700",
-        "coc_type": "housing",
-        "beds_total": "0",
-        "require_pregnant": false,
-        "allow_single_men": true,
-        "allow_single_women": true,
-        "allow_family": true,
-        "allow_veteran": true
-    },
-    {
         "name": "Food Outreach",
         "address": "3117 Olive Street, St. Louis, MO 63103",
         "latitude": "38.635714",
@@ -140,6 +131,3 @@
     }
 
 ]
-
-
-
