@@ -21,7 +21,7 @@ app.controller('ClientProfileCtrl', function ($scope, $state, $rootScope, Client
 		// TODO:
 		// make a 'success' modal
 		CocFactory.grant_bed($scope.client.id, coc_id).then(function(){
-			alert('A bed has been reserved for this client.');
+			alert('Client checked in.');
 			$state.go('shelterHome')
 		})
 	}
