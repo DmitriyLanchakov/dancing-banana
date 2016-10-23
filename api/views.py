@@ -213,6 +213,7 @@ def get_client_info(request):
         ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
         ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        ev['created'] = ce.created
         data['events'].append(ev)
 
     return HttpResponse(json.dumps({
@@ -371,6 +372,7 @@ def get_coc_info(request):
         ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
         ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        ev['created'] = ce.created
         data['events'].append(ev)
 
     return HttpResponse(json.dumps({
