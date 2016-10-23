@@ -6,5 +6,6 @@ app.controller('SearchCtrl', function ($scope, $state, ClientFactory, CocFactory
 
 	// TODO: figure out why factory doesn't take care of res.data
 	$scope.clientsList = clientsList.data;
+	
 
 });

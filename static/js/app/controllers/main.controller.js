@@ -7,18 +7,20 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory, 
 	$scope.total_beds = coc.data.beds_total;
 	$scope.available_beds = coc.data.beds_available;
 	$scope.referrals_list = coc.data.events;
-	console.log($scope.referrals_list)
+	
 
-	$scope.user = {};
+	$scope.client = {};
 
 	$scope.search = function() {
+		console.log('search', $scope.client)
 
 		// Search for a client
 
 		// go to the client-search-results state (make this a child state?)
-		$state.go('clientSearchResults', {client_name: $scope.user.name,
-					phone_number: $scope.user.phoneNumber
-			})
+		$state.go('clientSearchResults', {
+			client_name: $scope.client.name,
+			phone_number: $scope.client.phoneNumber
+		})
 		
 	}
 
