@@ -7,22 +7,25 @@
  <br> <br> <br>
 
 <div class="container">
-  
-  <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Name</span>
-    <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
-  </div>
 
-  <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Phone Number</span>
-    <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1">
-  </div>
+  <form ng-submit="search()">
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1" >Name</span>
+      <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1" ng-model="client.name">
+    </div>
 
-  <br>
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Phone Number</span>
+      <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1" ng-model="client.phoneNumber">
+    </div>
 
-  <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default">Search</button>
-  </div>
+    <br>
+
+    <div class="btn-group" role="group" aria-label="...">
+      <button type="submit" class="btn btn-default">Search</button>
+    </div>
+
+  </form>
 
   <br>
   <br>

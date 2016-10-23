@@ -2,11 +2,15 @@
 
 app.config(function ($stateProvider) {
 
-  $stateProvider.state('newPlaylist', {
+  $stateProvider.state('shelterHome', {
     url: '',
-    templateUrl: '/js/app/templates/shelter-home.state.html',
+    templateUrl: 'js/app/templates/shelter-home.state.html',
     controller: 'MainCtrl'
-    // resolve:
+    // resolve: {
+    // 	dog: function() {
+    // 		console.log('in state')
+    // 	}
+    // }
   });
 
 });

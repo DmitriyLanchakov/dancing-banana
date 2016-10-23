@@ -13,7 +13,7 @@ app.factory('CocFactory', function ($http) {
     get_coc_info: function(coc_id) {
       // Return total beds, available beds, and pending request/referrals
 
-      return $http.get('../get_coc_info', { 
+      return $http.post('../get_coc_info', { 
           id: coc_id 
         }).then(getData);
     },
@@ -30,7 +30,7 @@ app.factory('CocFactory', function ($http) {
 
     get_cocs: function(client_id, location, coc_type) {
       // Return filterd list of CoC's.
-      return $http.get('../get_cocs', { 
+      return $http.post('../get_cocs', { 
           client_id: client_id, 
           location: location, 
           coc_type: coc_type 
@@ -39,7 +39,7 @@ app.factory('CocFactory', function ($http) {
 
     ask_for_help: function(coc_id) {
       // Return CoC name and phone number.
-      return $http.get('../ask_for_help', {
+      return $http.post('../ask_for_help', {
           id: coc_id
         }).then(getData);
     }

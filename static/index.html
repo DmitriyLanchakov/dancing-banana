@@ -16,85 +16,17 @@
     <script src="js/app/factories/client.factory.js" defer></script>
     <script src="js/app/factories/coc.factory.js" defer></script>
     <script src="js/app/states/shelter-home.state.js" defer></script>
+    <!-- <script src="js/app/states/client-search-results.state.js" defer></script> -->
+    <!-- <script src="js/app/states/client-profile.state.js" defer></script> -->
+    <!-- <script src="js/app/states/referral-list.state.js" defer></script> -->
+    <!-- <script src="js/app/states/referral-list-detail.state.js" defer></script> -->
     <script src="js/app/controllers/main.controller.js" defer></script>
 
   </head>
   
   <body ng-app="Hobo App">
-
-  <ui-view></ui-view>
-    <div class="text-center">
-      <h1>CoC Name - Shelter </h1>
-    </div>
-
-    <br>
-    <br> <br> <br>
-
-    <div class="container" ng-controller="MainCtrl">
-      
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Name</span>
-        <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
-      </div>
-
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Phone Number</span>
-        <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1">
-      </div>
-
-      <br>
-
-      <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default">Search</button>
-      </div>
-
-      <br>
-      <br>
-
-      <div>
-        <ul class="nav nav-pills" role="tablist">
-          <li role="presentation"><a href="#">Total Number of Beds in Shelter <span class="badge">12</span></a></li>
-          <li role="presentation"><a href="#">Number of Beds Available Now <span class="badge">3</span></a></li>
-        </ul>
-      </div>
-
-      <br>
-
-    <!-- <div class="panel panel-default"> Extra div opening but no closing div-->
-
-      <!-- Default panel contents -->
-      <div class="panel-heading">Requests and Referrals</div>
-
-        <!-- Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Client Name</th>
-              <th>Referral/Requests Origin</th>
-              <th>Date & Time</th>
-              <th>Client Phone Number</th>
-              </thead>
-          <tbody>
-            <tr>
-              <td>Stefani Silver</td>
-              <td>Client</td>
-              <td>October 22, 2016 11:43am</td>
-              <td>(999)999-9999</td>
-            </tr>
-            <tr>
-              <td>Jill Kooyman</td>
-              <td>Veteran Services</td>
-              <td>October 22, 2016 11:46am</td>
-              <td>(999)999-9999</td>
-              
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div><!-- /.container -->
-
-
+    <!-- TODO: figure out what the padding on the top is -->
+    <ui-view></ui-view>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

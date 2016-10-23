@@ -124,6 +124,7 @@ def get_client_info(request):
         "id": "3"
     }
     """
+    print request.body
     user_input = json.loads(request.body)
     client_id = user_input['id']
     client_info = Client.objects.get(id=client_id)
