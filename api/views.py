@@ -143,11 +143,8 @@ def get_client_info(request):
         client_id_list.append(ce.client_id)
 
     coc_name_lookup = {}
-    print "coc_id_list", coc_id_list
     for c in Coc.objects.filter(id__in=coc_id_list):
         coc_name_lookup[str(c.id)] = c.name
-
-    print "coc_name_lookup", coc_name_lookup
 
     client_deets_lookup = {}
     for c in Client.objects.filter(id__in=client_id_list):
@@ -161,7 +158,7 @@ def get_client_info(request):
         print "ev", ev
         ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
-        ev['phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
         data['events'].append(ev)
 
     return HttpResponse(json.dumps({
@@ -240,13 +237,42 @@ def get_coc_info(request):
         "id": 3
     }
     """
-    user_input = json.loads(request.body)
+    #user_input = json.loads(request.body)
+    user_input = {
+        "id": 10
+    }
 
     data = Coc.objects.get(id=user_input['id'])
     data = model_to_dict(Coc.objects.get(id=user_input['id']))
 
-    coc_events = Event.objects.filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
-    data['events'] = coc_events
+    data['events'] = []
+
+    client_events = Event.objects.filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
+
+    coc_id_list = []
+    client_id_list = []
+    for ce in client_events:
+        coc_id_list.append(ce.coc_location_id)
+        client_id_list.append(ce.client_id)
+
+    coc_name_lookup = {}
+    for c in Coc.objects.filter(id__in=coc_id_list):
+        coc_name_lookup[str(c.id)] = c.name
+
+    client_deets_lookup = {}
+    for c in Client.objects.filter(id__in=client_id_list):
+        client_deets_lookup[str(c.id)] = {
+            "name": c.first_name + " " + c.middle_name + " " + c.last_name,
+            "phone_number": c.phone_number
+        }
+
+    for ce in client_events:
+        ev = model_to_dict(ce)
+        print "ev", ev
+        ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
+        ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
+        ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
+        data['events'].append(ev)
 
     return HttpResponse(json.dumps({
         "status": "success",
