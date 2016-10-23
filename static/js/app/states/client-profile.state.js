@@ -4,7 +4,7 @@ app.config(function ($stateProvider) {
 
   $stateProvider.state('clientProfile', {
     url: '/client-profile/:clientId',
-    templateUrl: 'js/app/templates/client-profile.state.html',
+    templateUrl: 'js/app/templates/client-profile.html',
     controller: 'ClientProfileCtrl',
     resolve: {
     	client: function(ClientFactory, $stateParams) {
