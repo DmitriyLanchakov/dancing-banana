@@ -107,9 +107,9 @@
       function submit_referral() {
 
         var post_data = {
-        "client_id": "",
+        "client_id": getParameterByName('client_id'),
         "coc_location_id": referral_coc_id,
-        "referred_from_coc_location_id": "",
+        "referred_from_coc_location_id": localStorage.getItem('coc_id'),
         "details": $("#referral_note").val()
         }
         $.ajax({
@@ -119,12 +119,31 @@
             dataType: 'json',
             success: function (data) {
               console.log(data);
+              alert("Referral submitted.");
             },
             error: function() {
                 console.log('Error while attempting to retrieve get_cocs');
             }
         });
       }
+
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+function go_to_profile() {
+  window.location.href="/static/index.html#/client-profile/"+getParameterByName('client_id');
+}
+function go_to_home() {
+  window.location.href="/static/index.html#/coc_id/"+localStorage.getItem('coc_id');
+}
     </script>
   </head>
 
@@ -132,13 +151,13 @@
 
           <div class="header">
               <!-- <img src="icons/compassion1.png" alt="logo" height="50" width="400"> -->
-              <a href="/static/index.html">
+              <a href="#" onclick="go_to_home()">
           <img src="icons/compassion1.png" alt="logo" height="50" width="400">
         </a>
 
     <ul class="nav nav-pills" style="float:right;">
         <!-- <li class="active"><a href="/static/index.html">Home</a></li> -->
-        <li class="active"><a href="/static/index.html#/client-profile/247929">Return to Profile</a></li>
+        <li class="active"><a href="#" onclick="go_to_profile()">Return to Profile</a></li>
     </ul>
           </div>
 
