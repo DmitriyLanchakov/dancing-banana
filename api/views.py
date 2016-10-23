@@ -388,8 +388,6 @@ def load_frontend(request):
 @print_errors
 def sms_received(request):
 
-    print "request.POST", dict(request.POST)
-
     #Automatically reset user's sessions if they haven't communicated in 5 minutes
     if 'last_validated' in request.session:
 
@@ -508,15 +506,6 @@ def sms_received(request):
         return HttpResponse(twil, content_type='application/xml', status=200)
     else:
 
-
-        """
-        user_input = {
-            "client_name": "",
-            "client_phone": "",
-            "coc_location_id": ""
-        }
-        """
-
         #Attempt to find matching phone number. If none found, create new user.
         phone_number = request.POST.get('From', '')[-10:]
         existing_client = Client.objects.filter(phone_number=phone_number)
@@ -544,6 +533,7 @@ def sms_received(request):
         }
         user_input['referred_from_coc_location_id'] = -1 #From client
         user_input['event_type'] = "referral"
+        print "saving new user event...", user_input
         Event(**user_input).save()
 
         twil = '<?xml version="1.0" encoding="UTF-8"?> \
