@@ -169,7 +169,7 @@ def get_client_info(request):
 def get_clients(request):
     """
     user_input = {
-        "phone": 3,
+        "phone_number": 3,
         "name": "bob"
     }
     """
