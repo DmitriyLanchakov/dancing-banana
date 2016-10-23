@@ -175,10 +175,14 @@ def get_coc_info(request):
     user_input = json.loads(request.body)
 
     data = Coc.objects.get(id=user_input['id'])
+    data = model_to_dict(Coc.objects.get(id=user_input['id']))
+
+    coc_events = Event.objects.filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
+    data['events'] = coc_events
 
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": model_to_dict(data)
+        "data": data
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
@@ -267,7 +271,7 @@ def sms_received(request):
 
     twil = '<?xml version="1.0" encoding="UTF-8"?> \
             <Response> \
-                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+best_shelter.beds_available+' beds available.</Message> \
+                <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available.</Message> \
             </Response> \
             '
     return HttpResponse(twil, content_type='application/xml', status=200)
