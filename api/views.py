@@ -174,11 +174,14 @@ def get_coc_info(request):
     """
     user_input = json.loads(request.body)
 
-    data = Coc.objects.get(id=user_input['coc_location_id'])
+    data = model_to_dict(Coc.objects.get(id=user_input['id']))
+
+    coc_events = Event.objects.filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
+    data['events'] = coc_events
 
     return HttpResponse(json.dumps({
         "status": "success",
-        "data": model_to_dict(data)
+        "data": data
     }, default=json_custom_parser), content_type='application/json', status=200)
 
 
