@@ -464,4 +464,6 @@ def sms_received(request):
                 <Message method="GET">Your best bet is '+best_shelter.name+', located at '+best_shelter.address+'. Their phone number is '+best_shelter.phone_number+' and they currently have '+str(best_shelter.beds_available)+' beds available.</Message> \
             </Response> \
             '
+    twil = twil.replace("&", "&amp;")
+    print "FINAL", twil
     return HttpResponse(twil, content_type='application/xml', status=200)
