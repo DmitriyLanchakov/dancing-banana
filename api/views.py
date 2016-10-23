@@ -168,8 +168,10 @@ def update_client_info(request):
         "occupation": ""
     }
     """
-    updates = json.loads(request.body)
+    updates = json.loads(request.body)['client']
     updates['phone_number'] = ''.join([c for c in updates['phone_number'] if c in '1234567890'])
+    if 'events' in updates:
+        del updates['events']
     Client.objects.filter(id=updates['id']).update(**updates)
 
     return HttpResponse(json.dumps({
@@ -543,4 +545,3 @@ def sms_received(request):
                 '
         twil = twil.replace("&", "&amp;")
         return HttpResponse(twil, content_type='application/xml', status=200)
-
