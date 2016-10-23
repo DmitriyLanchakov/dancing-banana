@@ -8,17 +8,49 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <style>
-html { height: 100% }
-body { height: 100%; margin: 0px; padding: 0px }
-#map_wrapper {
-    height: 100%;
-}
+    html { height: 100% }
+    body { height: 100%; margin: 0px; padding: 0px }
+    #map_wrapper {
+        height: 100%;
+    }
+    
+    #map_canvas {
+        width: 100%;
+        height: 100%;
+    }
 
-#map_canvas {
-    width: 100%;
-    height: 100%;
-}
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+      
+      
+    
+    .caption {
+        width:100%;
+        bottom: .3rem;
+        position: absolute;
+        background:#000;
+        background: -webkit-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: -moz-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: -o-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: linear-gradient(to top, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+    
+    .thumbnail {
+        border: 0 none;
+        box-shadow: none;
+        margin:0;
+        padding:0;
+    }
+    
+    .caption h4 {
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+    }
 </style>
 </head>
 <body>
@@ -34,6 +66,12 @@ var infoWindowContent = [];
 var marker_images = [];
 var map;
 var bounds;
+var filters = {
+    "housing_assistance": true,
+    "filter2": true,
+    "shelters": true,
+var updatefilter
+};
 
 
 jQuery(function($) {
@@ -135,12 +173,29 @@ function build_map(location) {
     ];
 	*/
 
+    var post_data = {
+		location: location.coords.latitude.toString()+', '+location.coords.longitude.toString(),
+		food: 1,
+		lawyer: 1,
+		bed: 1,
+		housing_assistance: 1
+    };
+    if($("#filter_food").hasClass("toggle-off")) {
+        post_data['food'] = 0;
+    }
+    if($("#filter_lawyer").hasClass("toggle-off")) {
+        post_data['lawyer'] = 0;
+    }
+    if($("#filter_bed").hasClass("toggle-off")) {
+        post_data['bed'] = 0;
+    }
+    if($("#filter_housing_assistance").hasClass("toggle-off")) {
+        post_data['housing_assistance'] = 0;
+    }
 	$.ajax({
 		type: 'POST',
 		url: '/get_cocs',
-		data: {
-			location: location.coords.latitude.toString()+', '+location.coords.longitude.toString()
-		},
+		data: post_data,
 		dataType: 'json',
 		success: function (data) {
 			console.log("return data", data.data);
@@ -267,32 +322,8 @@ function build_markers(data) {
 </script>
 
 <nav class="navbar navbar-inverse navbar-fixed-bottom">
-    <button class="btn btn-primary my-button" style="width:50%" data-toggle="modal" data-target="#addSignModal">Add Sign</button>
     <button class="btn btn-primary my-button" style="width:49%" data-toggle="modal" data-target="#filterModal">Filter</button>
-
-
-
 </nav>
-
-<div class="modal fade" id="addSignModal" tabindex="-1" role="dialog" aria-labelledby="addSignModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -301,14 +332,41 @@ function build_markers(data) {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Filter Options</h4>
       </div>
       <div class="modal-body">
-        ...
+                      <div class="text-center">
+        <div style="font-family:Verdana" class="well"><b>Which services would you like to filter from your current location?</b></div>
+        </div>
+            <div class="checkbox">
+              <label>
+                <input id="filter_food" type="checkbox" data-toggle="toggle" value="1">
+                Food
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input id="filter_lawyer" type="checkbox" data-toggle="toggle" value="2">
+                Lawyer
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input id="filter_bed" type="checkbox" data-toggle="toggle" value="3">
+                Bed
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input id="filter_housing_assistance" type="checkbox" data-toggle="toggle" value="4">
+                Housing Assistance
+              </label>
+            </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="map_api_loaded()">Update</button>
       </div>
     </div>
   </div>
