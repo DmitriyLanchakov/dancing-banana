@@ -8,19 +8,39 @@ app.controller('MainCtrl', function ($scope, $state, ClientFactory, CocFactory) 
 
 	console.log('USER', $scope.user);
 	$scope.search = function() {
+		// $state.go('clientSearchResults')
+		// Search for a client
+		ClientFactory.get_clients($scope.user.name, $scope.user.phoneNumber)
+			.then(function(client_list) {
+				// go to the client-search-results state (make this a child state?)
+				// $state.go('clientSearchResults')
+
+				// display the clients
+				$scope.client_list = client_list;
+			})
 		
-		$state.go('client-search-results', {})
 	}
 
-	// Search for a client
-	ClientFactory.get_clients($scope.user)
-		.then(function(client_list) {
-			// go to the client-search-results state (make this a child state?)
-		})
 
-	// // Get total number of beds, available beds, and list of referrals
-	// // TODO: get the coc_id
-	// CocFactory.get_coc_info(GET COC_ID)
+	// Get total number of beds, available beds, and list of referrals
+
+	// get it through the url query
+	// function getParameterByName(name, url) {
+ //    if (!url) {
+ //      url = window.location.href;
+ //    }
+ //    name = name.replace(/[\[\]]/g, "\\$&");
+ //    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+ //        results = regex.exec(url);
+ //    if (!results) return null;
+ //    if (!results[2]) return '';
+ //    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	// }
+
+	// var coc_id = getParameterByName('id'); 
+
+	
+	// CocFactory.get_coc_info(coc_id)
 	// 	.then(function() {
 	// 		// display information on page
 	// 		$scope.total_beds;

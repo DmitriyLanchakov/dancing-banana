@@ -6,11 +6,6 @@ app.config(function ($stateProvider) {
     url: '',
     templateUrl: 'js/app/templates/shelter-home.state.html',
     controller: 'MainCtrl'
-    // resolve: {
-    // 	dog: function() {
-    // 		console.log('in state')
-    // 	}
-    // }
   });
 
 });
