@@ -1,3 +1,4 @@
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +24,6 @@
     }
 
     body {
-        padding-top: 50px;
         padding-bottom: 20px;
     }
 
@@ -56,16 +56,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script type="text/javascript">  
-$(function() { 
-    $(".btn").click(function(){
-        $(this).button('loading').delay(1000).queue(function() {
-            $(this).button('reset');
-            $(this).dequeue();
-        });        
-    });
-});   
-</script>
 </head>
 <body>
 
@@ -118,87 +108,28 @@ function build_map(location) {
 	infoWindowContent = [];
 	marker_images = [];
 
-/*
-    var data = [
-        {
-            name: "Shelter",
-            latitude: "38.731429299999995",
-            longitude: "-90.607226",
-            time_left: "3",
-            id: "1",
-            coc_type: "shelter"
-        },
-        {
-            name: "Medical",
-            latitude: "38.725934",
-            longitude: "-90.607261",
-            time_left: "7",
-            id: "2",
-            coc_type: "medical"
-        },
-        {
-            name: "Charging Station",
-            latitude: "38.727976",
-            longitude: "-90.5995371",
-            time_left: "7",
-            id: "2",
-            coc_type: "charge"
-        },
-        {
-            name: "WiFi",
-            latitude: "38.729441",
-            longitude: "-90.601157",
-            time_left: "7",
-            id: "2",
-            coc_type: "WiFi"
-        },
-        {
-            name: "Housing",
-            latitude: "38.737888",
-            longitude: "-90.602325",
-            time_left: "3",
-            id: "1",
-            coc_type: "housing"
-        },
-        {
-            name: "Water",
-            latitude: "38.722549",
-            longitude: "--90.598210",
-            time_left: "3",
-            id: "1",
-            coc_type: "water"
-        },
-        {
-            name: "Food",
-            latitude: "38.737888",
-            longitude: "-90.602325",
-            time_left: "3",
-            id: "1",
-            coc_type: "food"
-        },
-
-
-    ];
-	*/
-
     var post_data = {
 		location: location.coords.latitude.toString()+', '+location.coords.longitude.toString(),
 		food: 1,
-		lawyer: 1,
-		bed: 1,
-		housing_assistance: 1
+		law: 1,
+		shelter: 1,
+		housing: 1,
+		medical: 1
     };
     if(!$("#filter_food").is(':checked')) {
         post_data['food'] = 0;
     }
     if(!$("#filter_lawyer").is(':checked')) {
-        post_data['lawyer'] = 0;
+        post_data['law'] = 0;
     }
     if(!$("#filter_bed").is(':checked')) {
-        post_data['bed'] = 0;
+        post_data['shelter'] = 0;
     }
     if(!$("#filter_housing_assistance").is(':checked')) {
-        post_data['housing_assistance'] = 0;
+        post_data['housing'] = 0;
+    }
+    if(!$("#filter_medical").is(':checked')) {
+        post_data['medical'] = 0;
     }
 	$.ajax({
 		type: 'POST',
@@ -330,7 +261,7 @@ function build_markers(data) {
 </script>
 
 <nav class="navbar navbar-inverse navbar-fixed-bottom">
-    <button class="btn btn-primary my-button" style="width:49%" data-toggle="modal" data-target="#filterModal">Filter</button>
+    <button class="btn btn-primary my-button" style="width: 100%" data-toggle="modal" data-target="#filterModal">Filter</button>
 </nav>
 
 <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -370,11 +301,17 @@ function build_markers(data) {
                 Housing Assistance
               </label>
             </div>
+            <div class="checkbox">
+              <label>
+                <input id="filter_medical" type="checkbox" checked data-toggle="toggle" value="4">
+                Medical Assistance
+              </label>
+            </div>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="map_api_loaded()">Update</button>
+        <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="map_api_loaded()"  data-dismiss="modal">Update</button>
       </div>
     </div>
   </div>
@@ -383,3 +320,4 @@ function build_markers(data) {
 
 
 </body>
+</html>
