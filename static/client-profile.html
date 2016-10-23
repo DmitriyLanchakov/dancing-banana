@@ -315,14 +315,22 @@ img {
                         filter: alpha(opacity=60);
                     }
 
+
+
+
     </style>
   </head>
 
   <body>
+          <div class="header">
+              <img align="middle" src="icons/compassion1.png" alt="logo" height="50" width="400">
+
+          </div>
+          <br>
       
       <ul class="nav nav-pills">
         <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Grant Bed</a></li>
+        <li><a href="#">Check-in</a></li>
         <li><a href="#">Referral</a></li>
       </ul>
     <br>
@@ -330,30 +338,149 @@ img {
   <div style="font-family:Verdana" class="well"><b>CLIENT PROFILE</b></div>
 </div>
     <br>
-    
-    <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Name</span>
-      <input type="text" class="form-control" placeholder="First Name and Last Name" aria-describedby="basic-addon1">
+
+
+
+<div id="fullscreen_bg" class="fullscreen_bg"/>
+ <form class="form-signin">
+<div class="container">
+    <div class="row">
+        <div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        
+        <div class="panel panel-info">
+        
+          <div class="panel-heading">
+          <div class="panel-center">Add New Client</div>
+                            
+                        </div> 
+                           
+        <div class="panel-body">    
+ 
+                  
+        
+            <form id="signupform" class="form-horizontal" role="form">
+                                  
+                                <div class="form-group">
+                                    <label for="Name" class="col-md-3 control-label">Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="email" placeholder="First Middle Last">
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="Date of Birth" class="col-md-3 control-label">Date of Birth</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Date of Birth" placeholder="MM/DD/YY">
+                                    </div>
+                                </div>
+                                
+                                  <div class="form-group">
+                                    <label for="SSN" class="col-md-3 control-label">SSN</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="SSN" placeholder="xxx-xx-xxxx">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="Phone Number" class="col-md-3 control-label">Phone Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Phone Number" placeholder="(xxx)xxx-xxxx">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="Gender" class="col-md-3 control-label">Gender</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Gender" placeholder="Male or Female">
+                                    </div>
+                                </div>
+                                
+                                  <div class="form-group">
+                                    <label for="Marital Status" class="col-md-3 control-label">Marital Status</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Marital Status" placeholder="Single or Married">
+                                    </div>
+                                </div>
+                                 
+                                  <div class="form-group">
+                                    <label for="Number of Children" class="col-md-3 control-label">Number of Children</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Number of Children" placeholder="#">
+                                    </div>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label for="Race" class="col-md-3 control-label">Race</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Race" placeholder="(e.g. Hispanic, White, etc.)">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="Occupation" class="col-md-3 control-label">Occupation</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Occupation" placeholder="(e.g Student, Laborer)">
+                                    </div>
+                                </div>
+                                
+                                
+                                  <div class="form-group">
+                                    <label for="Education" class="col-md-3 control-label">Education</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="Education" placeholder="(e.g High School, College)">
+                                    </div>
+                                </div>
+                               
+                              
+                                
+                             <div class="form-group">
+                                    <label for="Pregnant?" class="col-md-3 control-label">Pregnant:</label>    
+                               <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">No</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                    <label for="Veteran Status" class="col-md-3 control-label">Veteran:</label>    
+                               <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">No</label>
+                            </div>
+                                
+                            <div class="form-group">
+                                    <label for="Registered Sex Offender" class="col-md-3 control-label">Registered Sex Offender:</label>    
+                               <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">No</label>
+                            </div>    
+                                
+                                
+                               <div class="form-group">
+                                    <!-- Button -->                                        
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbspAdd Client</button>
+                                       
+                                    </div>
+                                </div> 
+                             
+                                
+                               
+                                
+                            
+  </div>
+       </div>
+        </div>
     </div>
-    <div class="input-group"> 
-      <span class="input-group-addon" id="basic-addon1">Phone Number</span>
-      <input type="text" class="form-control" placeholder="(xxx)xxx-xxxx" aria-describedby="basic-addon1">
-    </div>
+</div>
+</form>
+</div>
     
-    <br><br>
-    
-    
-    <Ul>  
-      <label class="checkbox-inline"><input type="checkbox" value="">Male</label> 
-      <label class="checkbox-inline"><input type="checkbox" value="">Female</label>
-      <label class="checkbox-inline"><input type="checkbox" value="">Youth</label>  
-      <label class="checkbox-inline"><input type="checkbox" value="">Single</label> 
-      <label class="checkbox-inline"><input type="checkbox" value="">Married</label>
-      <label class="checkbox-inline"><input type="checkbox" value="">Veteran</label>  
-    </ul> 
+
+
+
+
+
     <br>
 
-<h4 id= "history"><b>CLIENT HISTORY</b></h4>
+<h4 id= "history" style="color:white;"><b>CLIENT HISTORY</b></h4>
+
 
 
 <div class="container">
