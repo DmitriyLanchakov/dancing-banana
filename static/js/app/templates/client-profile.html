@@ -1,13 +1,13 @@
-<div class="">
-  <ul class="nav nav-pills">
-    <li><a href="#">Home</a></li>
-    <li><a ng-click="grant_bed()">Grant Bed</a></li>
-    <li><a href="/static/referral-list.html?client_id={{ client.id }}&coc_id={{ coc_id }}">Referral</a></li>
-    <li><a data-toggle="modal" data-target="#helpModal">Log Notes</a></li>
+<div class="navbar navbar-light bg-faded">
+  <ul class="nav navbar-nav">
+    <!-- <li><a ng-click="grant_bed()">Grant Bed</a></li> -->
+    <button class="btn btn-default" ng-click="grant_bed()">Grant Bed</button>
+    <a href="/static/referral-list.html?client_id={{ client.id }}&coc_id={{ coc_id }}"><button class="btn btn-default">Referral</button></a>
+    <a data-toggle="modal" data-target="#helpModal"><button class="btn btn-default">Log Notes</button></a>
   </ul>
 </div>
 
-<br>
+<!-- <br> -->
 
 <div class="text-center">
   <div style="font-family:Verdana" class="well"><b>{{ client.first_name + ' ' + client.last_name }}</b></div>

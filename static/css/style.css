@@ -22,6 +22,11 @@ img {
     font-family: "Arial"
 }
 
+.nav-pills>li+li {
+    margin-left: 2px;
+    background-color: red;
+}
+
 .img-responsive {
     display: block;
     height: auto;
