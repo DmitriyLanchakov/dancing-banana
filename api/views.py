@@ -354,12 +354,14 @@ def get_coc_info(request):
 
     data['events'] = []
 
-    client_events = Event.objects.filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
+    client_events = Event.objects.filter(event_type="referral").filter(coc_location_id=user_input['id']).exclude(referred_from_coc_location_id=0)
 
     coc_id_list = []
     client_id_list = []
     for ce in client_events:
         coc_id_list.append(ce.coc_location_id)
+        if ce.referred_from_coc_location_id and ce.referred_from_coc_location_id > 0:
+            coc_id_list.append(ce.referred_from_coc_location_id)
         client_id_list.append(ce.client_id)
 
     coc_name_lookup = {}
@@ -376,7 +378,10 @@ def get_coc_info(request):
     for ce in client_events:
         ev = model_to_dict(ce)
         print "ev", ev
-        ev['coc_name'] = coc_name_lookup[ev['coc_location_id']]
+        ev['coc_name'] = coc_name_lookup.get(ev['coc_location_id'], '')
+        ev['referred_from_coc_name'] = ""
+        if ev['referred_from_coc_location_id']:
+            ev['referred_from_coc_name'] = coc_name_lookup.get(ev['referred_from_coc_location_id'], '')
         ev['client_name'] = client_deets_lookup[ev['client_id']]['name']
         ev['client_phone_number'] = client_deets_lookup[ev['client_id']]['phone_number']
         ev['created'] = ce.created
