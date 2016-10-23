@@ -216,16 +216,35 @@ def get_clients(request):
 def get_cocs(request):
     """
     user_input = {
-        ???
+        location:38.7315393, -90.6072538
+        food:1
+        law:1
+        shelter:0
+        housing:0
+        medical:0
     }
     """
-    if request.body:
+    try:
         user_input = json.loads(request.body)
-    else:
-        user_input = dict(request.POST)
+    except:
+        user_input = {}
+        for k in request.POST.keys():
+            user_input[k] = request.POST[k]
+
+    coc_results = Coc.objects.all()
+    if str(user_input['shelter']) == "0":
+        coc_results = coc_results.exclude(coc_type="shelter")
+    if str(user_input['food']) == "0":
+        coc_results = coc_results.exclude(coc_type="food")
+    if str(user_input['law']) == "0":
+        coc_results = coc_results.exclude(coc_type="law")
+    if str(user_input['housing']) == "0":
+        coc_results = coc_results.exclude(coc_type="housing")
+    if str(user_input['medical']) == "0":
+        coc_results = coc_results.exclude(coc_type="medical")
 
     results = []
-    for c in Coc.objects.all():
+    for c in coc_results:
         results.append(model_to_dict(c))
 
     return HttpResponse(json.dumps({
