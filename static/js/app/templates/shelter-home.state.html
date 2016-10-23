@@ -1,6 +1,6 @@
 <div class="text-center">
     <div style="font-family:Verdana" class="well">
-      <b>COC SHELTER NAME</b>
+      <b>{{ name }}</b>
     </div>
 </div>
 
@@ -53,7 +53,7 @@
           <th>Client Phone Number</th>
           </thead>
       <tbody>
-        <tr>
+        <tr ng-repeat="referral in referrals_list">
           <td>Stefani Silver</td>
           <td>Client</td>
           <td>October 22, 2016 11:43am</td>

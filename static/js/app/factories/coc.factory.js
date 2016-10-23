@@ -2,11 +2,7 @@
 
 app.factory('CocFactory', function ($http) {
 
-  function getData (res) { 
-    console.log(res.data);
-
-    return res.data; 
-  }
+  function getData (res) { return res.data; }
 
   return {
 

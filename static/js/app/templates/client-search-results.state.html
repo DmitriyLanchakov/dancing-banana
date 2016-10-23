@@ -21,19 +21,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td><a href="#">Stefani Silver</a></td>
-      <td>1234567890</td>
-      <td>Female</td>
-      <td>October 22, 1980</td>
-      <td>White</td>
-    </tr>
-    <tr>
-      <td><a href="#">Jill Kooyman</a></td>
-      <td>1234567890</td>
-      <td>Female</td>
-      <td>January 1, 1986</td>
-      <td>Asian</td>
+    <tr ng-repeat="client in clientsList">
+      <td><a href="#">{{ client.first_name + ' ' + client.last_name }}</a></td>
+      <td>{{ client.phone_number }}</td>
+      <td>{{ client.gender }}</td>
+      <td>{{ client.dob }}</td>
+      <td>{{ client.race }}</td>
     </tr>
   </tbody>
 </table>   
@@ -41,5 +34,3 @@
 <ul class="nav nav-pills nav-stacked">
   <li role="presentation" class="active"><a href="#">Create a new profile</a></li>
 </ul>
-
-{{ client_list }}
