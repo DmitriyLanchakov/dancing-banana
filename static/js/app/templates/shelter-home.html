@@ -1,3 +1,9 @@
+<div class="header">
+    <a href="#" onclick="return go_to_home()">
+      <img src="icons/compassion1.png" alt="logo" height="50" width="400">
+    </a>
+</div>
+<br>
 <div class="text-center">
     <div style="font-family:Verdana" class="well">
       <b>{{ name }}</b>
@@ -55,7 +61,8 @@
       <tbody>
         <tr ng-repeat="referral in referrals_list">
           <td><a href="/static/index.html#/client-profile/{{ referral.client_id }}">{{ referral.client_name }}</a></td>
-          <td>{{ referral.coc_name }}</td>
+          <td ng-if="referral.referred_from_coc_location_id == -1">Self</td>
+          <td ng-if="referral.referred_from_coc_location_id != -1">{{ referral.coc_name }}</td>
           <td>{{ referral.created | date:"short"}}</td>
           <td>{{ referral.client_phone_number }}</td>
         </tr>

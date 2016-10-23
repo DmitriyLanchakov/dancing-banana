@@ -1,11 +1,18 @@
-<div class="navbar navbar-light bg-faded">
-  <ul class="nav navbar-nav">
-    <!-- <li><a ng-click="grant_bed()">Grant Bed</a></li> -->
-    <button class="btn btn-default" ng-click="grant_bed()">Grant Bed</button>
-    <a href="/static/referral-list.html?client_id={{ client.id }}&coc_id={{ coc_id }}"><button class="btn btn-default">Referral</button></a>
-    <a data-toggle="modal" data-target="#helpModal"><button class="btn btn-default">Log Notes</button></a>
-  </ul>
+<div class="header">
+    <a href="#" onclick="return go_to_home()">
+      <img src="icons/compassion1.png" alt="logo" height="50" width="400">
+    </a>
+  <div class="navbar navbar-light bg-faded" style="float:right;">
+    <ul class="nav navbar-nav">
+      <!-- <li><a ng-click="grant_bed()">Grant Bed</a></li> -->
+      <button class="btn btn-default" ng-click="grant_bed()">Grant Bed</button>
+      <a href="/static/referral-list.html?client_id={{ client.id }}&coc_id={{ coc_id }}"><button class="btn btn-default">Referral</button></a>
+      <a data-toggle="modal" data-target="#helpModal"><button class="btn btn-default">Log Notes</button></a>
+    </ul>
+  </div>
 </div>
+<br>
+
 
 <!-- <br> -->
 
@@ -144,25 +151,11 @@
           <div class="timeline-label">
             <h2>{{ event.coc_name }}</h2>
             <p>{{ event.created | date:"short"}}</p>
-            <p>{{ event.event_type }}</p>
-            <p>{{ event.details }}</p>
+            <p>{{ event.event_type|uppercase }}: {{ event.details }}</p>
           </div>
         </div>
       </article>
 
-      <article class="timeline-entry">
-        <div class="timeline-entry-inner">
-          <div class="timeline-icon bg-primary">
-            <i class="entypo-camera"></i>
-          </div>
-
-          <div class="timeline-label">
-            <h2>Name of COC location</h2>
-            <p>date and time</p>
-            <p>comments/behavior</p>
-          </div>
-        </div>
-        </article>
 
 
         <article class="timeline-entry begin">
