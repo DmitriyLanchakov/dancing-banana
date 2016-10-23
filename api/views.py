@@ -115,6 +115,7 @@ def update_client_info(request):
     }
     """
     updates = json.loads(request.body)
+    updates['phone_number'] = ''.join([c for c in updates['phone_number'] if c in '1234567890'])
     Client.objects.filter(id=updates['id']).update(**updates)
 
     return HttpResponse(json.dumps({
@@ -155,10 +156,36 @@ def get_clients(request):
 
 
 def get_cocs(request):
-    #Todo, add filters
+    """
+    user_input = {
+        "phone": 3,
+        "name": "bob"
+    }
+    """
+    user_input = json.loads(request.body)
+
     results = []
-    for c in Coc.objects.all():
-        results.append(model_to_dict(c))
+
+    matches = {}
+
+    name_pieces = user_input['name'].split(' ')[0]
+    first_name = name_pieces[0]
+    last_name = name_pieces[-1]
+
+    #coc_results = coc_results.filter(Q(phone_number=user_input['phone_number']) | Q(income__isnull=True))
+
+
+    #Matching phone numbers
+    for c in Coc.objects.filter(phone_number=user_input['phone_number']):
+        if c['id'] not in matches: #block duplicates
+            matches[c['id']] = 1
+            results.append(model_to_dict(c))
+
+    #Matching Full Names
+    for c in Coc.objects.filter(first_name=first_name, last_name=last_name):
+        if c['id'] not in matches: #block duplicates
+            matches[c['id']] = 1
+            results.append(model_to_dict(c))
 
     return HttpResponse(json.dumps({
         "status": "success",
