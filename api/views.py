@@ -388,7 +388,7 @@ def load_frontend(request):
 @print_errors
 def sms_received(request):
 
-    print "request.POST", request.POST, dict(request.POST)
+    print "request.POST", dict(request.POST)
 
     #Automatically reset user's sessions if they haven't communicated in 5 minutes
     if 'last_validated' in request.session:
@@ -518,7 +518,7 @@ def sms_received(request):
         """
 
         #Attempt to find matching phone number. If none found, create new user.
-        phone_number = ''.join([c for c in request.POST['client_phone'] if c in '1234567890'])
+        phone_number = request.POST.get('From', '')[-10:]
         existing_client = Client.objects.filter(phone_number=phone_number)
         if existing_client.exists():
             client_id = existing_client[0].id
